@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+</head>
+
+<body class="bg-[#f0f0e8] bg-[url('../../assets/images/animated-stationary2.png')] bg-cover">
+    <main>
+        <div id="app" class="container mx-auto py-8">
+            <div class="bg-[#f0f0e8] py-8">
+                <div class="flex p-4 items-center">
+                    <ul class="text-sm flex-grow ml-12 font-bold space-x-8 flex">
+                        <li><a href="./pStudent-dashboard.html">Dashboard</a></li>
+                        <li><a href="#"><span class="border-b-4 border-orange-500">Timetable</span></a></li>
+                        <li><a href="#">My Activities</a></li>
+                        <li><a href="#">Event Calendar</a></li>
+                    </ul>
+                    <h1 id="studentClass" class="text-3xl font-bold mb-4 ml-auto pr-12">Class {{ studentClass }} Timetable</h1>
+                </div>
+            </div>
+            
+
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse table-auto bg-white">
+                    <!-- Table header -->
+                    <thead>
+                        <tr>
+                            <th class="p-4 border-8 border-[#f0f0e8] bg-[#53ccbe]">Time</th>
+                            <th class="p-4 border-8 border-[#f0f0e8] bg-[#ede4b8]">Monday</th>
+                            <th class="p-4 border-8 border-[#f0f0e8] bg-[#ede4b8]">Tuesday</th>
+                            <th class="p-4 border-8 border-[#f0f0e8] bg-[#ede4b8]">Wednesday</th>
+                            <th class="p-4 border-8 border-[#f0f0e8] bg-[#ede4b8]">Thursday</th>
+                            <th class="p-4 border-8 border-[#f0f0e8] bg-[#ede4b8]">Friday</th>
+                        </tr>
+                    </thead>
+                    <!-- Table body -->
+                    <tbody>
+                        <tr v-for="(entry, index) in timetableData" :key="index" class="text-center">
+                            <td class="p-4 border-8 border-[#f0f0e8] bg-[#53ccbe] font-semibold">{{ entry.time }}</td>
+                            <td class="p-4 border-8 border-[#f0f0e8] bg-[#e6e6de] font-semibold">{{ entry.Monday }}</td>
+                            <td class="p-4 border-8 border-[#f0f0e8] bg-[#e6e6de] font-semibold">{{ entry.Tuesday }}
+                            </td>
+                            <td class="p-4 border-8 border-[#f0f0e8] bg-[#e6e6de] font-semibold">{{ entry.Wednesday }}
+                            </td>
+                            <td class="p-4 border-8 border-[#f0f0e8] bg-[#e6e6de] font-semibold">{{ entry.Thursday }}
+                            </td>
+                            <td class="p-4 border-8 border-[#f0f0e8] bg-[#e6e6de] font-semibold">{{ entry.Friday }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <script src="../../app.js"></script>
+</body>
+
+</html>

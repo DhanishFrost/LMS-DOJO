@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body>
+    <div id="app" class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="adminSidepanel" class="w-64 bg-black text-white max-md:w-0">
+            <adminsidebar @logout="handleLogout"></adminsidebar>
+          </aside>
+
+        <!-- Main Content -->
+        <main class="main-content flex-1 bg-gray-100 p-8 p-8 pl-20 overflow-y-auto">
+            <div class="bg-white p-8 rounded-lg shadow-md flex justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">Manage Admins</h1>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg font-bold mb-2 text-[#FF823C]">WELCOME BACK!</p>
+                    <p><span id="userName" class="font-semibold text-2xl">{{ userName }}</span></p>
+                </div>      
+            </div>
+
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-4 mb-4 rounded"
+                @click="openCreateUserPopup = true">Create User</button>
+
+            <!-- Table to display user information -->
+            <table class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Name</th>
+                        <th class="px-4 py-2">Email</th>
+                        <th class="px-4 py-2">Role</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="border border-gray-300 mx-auto">
+                    <tr v-for="user in adminUsers" :key="user._id">
+                        <td class="border px-4 py-2">{{ user.name }}</td>
+                        <td class="border px-4 py-2">{{ user.email }}</td>
+                        <td class="border px-4 py-2">{{ user.role }}</td>
+                        <td class="border px-4 py-2 space-x-3">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+                                @click="openEditUserPopup(user)">Edit</button>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                @click="deleteUser(user.email)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Create user Popup -->
+
+            <div v-if="openCreateUserPopup"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div ref="popupContainer" class="bg-white max-w-lg mx-auto rounded shadow-lg p-6">
+                    <div class="popup-content">
+                        <h2 class="text-lg font-bold mb-4">Add User</h2>
+                        <form @submit.prevent="submitCreateUserForm">
+                            <div>
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name"
+                                    class="border border-gray-300 rounded-md p-2" v-model="user.name" required>
+                            </div>
+                            <div class="mt-4">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email"
+                                    class="border border-gray-300 rounded-md p-2" v-model="user.email" required>
+                                    <p class="text-red-500 text-sm" v-if="user.email && !isEmailValid">Enter a valid email</p>
+                            </div>
+                            <div class="mt-4">
+                                <label for="role">Role:</label>
+                                <select id="role" name="role" class="border border-gray-300 rounded-md p-2"
+                                    v-model="user.role" required>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password"
+                                    class="border border-gray-300 rounded-md p-2" v-model="user.password" required>
+                                <p class="text-red-500 text-sm" v-if="user.password && !isPasswordValid">Password must be at least 8 characters long</p>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button"
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                    @click="openCreateUserPopup = false">Cancel</button>
+                                <button type="submit"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create
+                                    User</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit User Popup -->
+            <div v-if="showEditUserPopup"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div ref="popupContainer" class="bg-white max-w-lg mx-auto rounded shadow-lg p-6">
+                    <div class="popup-content">
+                        <h2 class="text-lg font-bold mb-4">Edit User</h2>
+                        <form @submit.prevent="submitEditUserForm">
+                            <div>
+                                <label for="editName">Name:</label>
+                                <input type="text" id="editName" name="editName"
+                                    class="border border-gray-300 rounded-md p-2" v-model="editedUser.name">
+                            </div>
+                            <div class="mt-4">
+                                <label for="editEmail">Email:</label>
+                                <input type="email" id="editEmail" name="editEmail"
+                                    class="border border-gray-300 rounded-md p-2" v-model="editedUser.email">
+                            </div>
+                            <div class="mt-4">
+                                <label for="editRole">Role:</label>
+                                <select id="editRole" name="editRole" class="border border-gray-300 rounded-md p-2"
+                                    v-model="editedUser.role">
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label for="editPassword">Password:</label>
+                                <input type="password" id="editPassword" name="editPassword"
+                                    class="border border-gray-300 rounded-md p-2" v-model="editedUser.password"
+                                    @blur="validatePassword" placeholder="Update passoword if required">
+                            </div>
+                            <div class="mt-4">
+                                <button type="button"
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                    @click="showEditUserPopup = false">Cancel</button>
+                                <button type="submit"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save
+                                    Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="../app.js"></script>
+    
+</body>
+
+</html>

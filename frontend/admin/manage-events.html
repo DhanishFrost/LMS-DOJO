@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body class="bg-gray-100">
+    <div id="app" class="flex">
+        <!-- Sidebar -->
+        <aside id="adminSidepanel" class="w-64 bg-black text-white max-md:w-0">
+            <adminsidebar @logout="handleLogout"></adminsidebar>
+          </aside>
+        <!-- Main Content -->
+        <div class="main-content flex-1 container mx-auto p-8 pl-20 overflow-y-auto">
+
+            <h1 class="text-3xl font-bold mb-6">Event Management</h1>
+
+            <!-- Create Event Form -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4">Create Event</h2>
+                <form @submit.prevent="submitCreateEventForm">
+                    <div class="flex flex-col mb-4">
+                        <label for="eventName" class="text-gray-700">Event Name:</label>
+                        <input v-model="event.name" type="text" id="eventName" name="eventName"
+                            class="border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div class="flex flex-col mb-4">
+                        <label for="eventDate" class="text-gray-700">Event Date:</label>
+                        <input v-model="event.date" type="date" id="eventDate" name="eventDate"
+                            class="border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div class="flex flex-col mb-4">
+                        <label for="eventTime" class="text-gray-700">Event Time:</label>
+                        <input v-model="event.time" type="time" id="eventTime" name="eventTime"
+                            class="border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div class="flex flex-col mb-4">
+                        <label for="eventDescription" class="text-gray-700">Event Description:</label>
+                        <textarea v-model="event.description" id="eventDescription" name="eventDescription" rows="4"
+                            class="border border-gray-300 rounded-md p-2" required></textarea>
+                    </div>
+                    <div class="flex flex-col mb-4">
+                        <label for="eventLocation" class="text-gray-700">Event Location:</label>
+                        <input v-model="event.location" type="text" id="eventLocation" name="eventLocation"
+                            class="border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div class="flex flex-col mb-4">
+                        <label for="eventImage" class="text-gray-700">Event Image:</label>
+                        <input type="file" id="eventImage" name="eventImage" @change="onFileChangeCreateEvent"
+                            class="border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Create Event
+                    </button>
+                </form>
+            </div>
+
+            <!-- Event List -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4">Event List</h2>
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2">Event Name</th>
+                            <th class="px-4 py-2">Event Date</th>
+                            <th class="px-4 py-2">Event Time</th>
+                            <th class="px-4 py-2">Description</th>
+                            <th class="px-4 py-2">Location</th>
+                            <th class="px-4 py-2">Status</th>
+                            <th class="px-4 py-2">Image</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="event in events" :key="event._id">
+                            <td class="border px-4 py-2">{{ event.eventName }}</td>
+                            <td class="border px-4 py-2">{{ event.eventDate }}</td>
+                            <td class="border px-4 py-2">{{ event.eventTime }}</td>
+                            <td class="border px-4 py-2">{{ event.eventDescription }}</td>
+                            <td class="border px-4 py-2">{{ event.eventLocation }}</td>
+                            <td class="border px-4 py-2">{{ event.eventStatus }}</td>
+                            <td class="border px-4 py-2">
+                                <img :src="event.eventImage" alt="Event Image"
+                                    style="max-width: 100px; max-height: 100px;">
+                            </td>
+                            <td class="border px-4 py-2 space-y-2">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" 
+                                @click="openEditEventPopup(event)"> Edit
+                                </button>
+                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                @click="deleteEvent(event._id)">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+         <!-- Edit Event Popup -->
+         <div v-if="showEditEventPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div ref="popupContainer" class="bg-white max-w-lg mx-auto rounded shadow-lg p-6">
+              <div class="popup-content">
+                <h2 class="text-lg font-bold mb-4">Edit Event</h2>
+                <form @submit.prevent="submitEditEventForm">
+                  <div class="flex flex-col mb-4">
+                    <label for="editName" class="text-gray-700">Event Name:</label>
+                    <input v-model="editedEvent.name" type="text" id="editName" name="editName"
+                           class="border border-gray-300 rounded-md p-2" required>
+                  </div>
+                  <div class="flex flex-col mb-4">
+                    <label for="editDate" class="text-gray-700">Event Date:</label>
+                    <input v-model="editedEvent.date" type="date" id="editDate" name="editDate"
+                           class="border border-gray-300 rounded-md p-2" required>
+                  </div>
+                  <div class="flex flex-col mb-4">
+                    <label for="editTime" class="text-gray-700">Event Time:</label>
+                    <input v-model="editedEvent.time" type="time" id="editTime" name="editTime"
+                           class="border border-gray-300 rounded-md p-2" required>
+                  </div>
+                  <div class="flex flex-col mb-4">
+                    <label for="editDescription" class="text-gray-700">Event Description:</label>
+                    <textarea v-model="editedEvent.description" id="editDescription" name="editDescription" rows="4"
+                              class="border border-gray-300 rounded-md p-2" required></textarea>
+                  </div>
+                  <div class="flex flex-col mb-4">
+                    <label for="editLocation" class="text-gray-700">Event Location:</label>
+                    <input v-model="editedEvent.location" type="text" id="editLocation" name="editLocation"
+                           class="border border-gray-300 rounded-md p-2" required>
+                  </div>
+                  <div class="flex flex-col mb-4">
+                    <label for="editImage" class="text-gray-700">Event Image:</label>
+                    <input type="file" id="editImage" name="editImage" @change="onFileChangeEditEvent"
+                           class="border border-gray-300 rounded-md p-2">
+                  </div>
+                  <div class="flex flex-col mb-4">
+                    <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2"
+                            @click="showEditEventPopup = false">Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            >Save Changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+    </div>
+    <script src="../app.js"></script>
+
+</body>
+
+</html>

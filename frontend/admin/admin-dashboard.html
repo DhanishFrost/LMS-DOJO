@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+</head>
+
+<body>
+    <div id="app" class="flex h-screen">
+      <aside id="adminSidepanel" class="w-64 bg-black text-white max-md:w-0">
+        <adminsidebar @logout="handleLogout"></adminsidebar>
+      </aside>
+      <div class="main-content flex-1 p-8 pl-20 overflow-y-auto">
+        <main class="bg-gray-100 p-8 rounded-lg shadow-md flex justify-between">
+          <div>
+            <h1 class="text-3xl font-bold mb-2 max-md:text-xl">Admin Dashboard</h1>
+          </div>
+          <div class="text-right">
+            <p class="text-lg font-bold mb-2 text-[#FF823C] max-md:text-sm">WELCOME BACK!</p>
+            <p><span id="userName" class="font-semibold text-2xl max-md:text-xl">{{ userName }}</span></p>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="../app.js"></script>
+    
+  </body>
+  
+  
+
+</html>

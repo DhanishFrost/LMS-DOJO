@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>us-student dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+</head>
+
+
+<header>
+    <div class="flex border-b border-black h-4/5"> 
+        <div class="flex w-3/5 p-4 items-center">
+            <ul class="text-sm flex-grow ml-12 font-bold "><a href="#">
+                <span class="border-b-4 border-orange-500">Dashboard</span></a>
+            </ul>
+            <ul class="text-sm flex-grow font-bold "><a href="#">Timetable</a></ul>
+            <ul class="text-sm flex-grow font-bold "><a href="#">My Activities</a></ul>
+            <ul class="text-sm flex-grow font-bold "><a href="#">Event Calendar</a></ul>
+            <ul class="text-sm flex-grow mr-28 font-bold "><a href="#">Forum</a></ul>
+          </div>
+          
+         
+        <div class="w-2/5 p-4 grid justify-items-end">
+            <div class="mr-16 font-bold text-orange-500">
+                Welcome back!
+            </div>
+            <div class="mr-16 font-bold text-3xl">
+            Student Name
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<body class="bg-white">
+         <div class="flex m-14 justify-between">
+            
+
+              <div class="mr-12 relative w-80 h-40 bg-gray-200 overflow-hidden rounded-md border border-black shadow-xl opacity-4 hover:opacity-60 transition-opacity duration-300 ease-in-out">
+                <img src="../../assets/images/physic.jpg" alt="Cover Image" class="object-cover w-full h-full">
+                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                  <p class="text-center bg-orange-500 text-xl font-medium">Physics</p>
+                </div>
+              </div>
+              
+              <div class="mr-12 relative w-80 h-40 bg-gray-200 overflow-hidden rounded-md border border-black shadow-xl opacity-4 hover:opacity-60 transition-opacity duration-300 ease-in-out">
+                <img src="../../assets/images/chem.jpg" alt="Cover Image" class="object-cover w-full h-full">
+                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                  <p class="text-center bg-orange-500 text-xl font-medium">Chemistry</p>
+                </div>
+              </div>
+
+              <div class="relative w-80 h-40 bg-gray-200 overflow-hidden rounded-md border border-black shadow-xl opacity-4 hover:opacity-60 transition-opacity duration-300 ease-in-out">
+                <img src="../../assets/images/bio.jpg" alt="Cover Image" class="object-cover w-full h-full">
+                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                  <p class="text-center bg-orange-500 text-xl font-medium">Biology</p>
+                </div>
+              </div>
+              
+              
+              
+         
+         </div>
+     
+</body>
+</html>
