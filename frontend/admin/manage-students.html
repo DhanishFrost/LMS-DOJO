@@ -89,6 +89,8 @@
                                     <option value="usStudent">Upper Secondary Student</option>
                                 </select>
                             </div>
+
+
                             <div class="mt-4">
                                 <label for="class">Class:</label>
                                 <select id="class" name="class" class="border border-gray-300 rounded-md p-2"
@@ -97,6 +99,36 @@
                                         {{ classOption }}</option>
                                 </select>
                             </div>
+
+
+
+                            <div class="mt-4">
+                                <label for="selectedSubjects">Subjects:</label>
+                                <div class="flex flex-col scrollable-list" id="selectedSubjects" name="selectedSubject">
+                                    <label v-for="subject in subjects" :key="subject.id">
+                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"
+                                               :value="subject.subjectName" v-model="user.selectedSubjects">
+                                        <span class="ml-2 text-gray-700">{{ subject.subjectName }}</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label for="">Selected subjects:</label>
+                                <div class="flex flex-col scrollable-list" id="subject" name="subject">
+                                    <label v-for="subject in user.selectedSubjects" :key="subject">
+                                        <span class="ml-2 text-gray-700">{{ subject }}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            
+                            
+
+
+
+
+
                             <div class="mt-4">
                                 <label for="password">Password:</label>
                                 <input type="password" id="password" name="password"
@@ -148,6 +180,24 @@
                                     <option v-for="classOption in classOptions" :value="classOption" :key="classOption" >
                                         {{ classOption }}</option>
                                 </select>
+
+
+                            </div>
+
+
+                            <div class="mt-4"> 
+                                <label for="editSelectedSubjects">Subjects:</label>
+                                <div class="flex flex-col scrollable-list" id="editSelectedSubjects" name="editSelectedSubject">
+                                    <label v-for="subject in subjects" :key="subject.id">
+                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"
+                                               :value="subject.subjectName" v-model="editedUser.selectedSubjects">
+                                        <span class="ml-2 text-gray-700">{{ subject.subjectName }}</span>
+                                    </label>
+                                </div>
+
+                            </div>
+
+
                             <div class="mt-4">
                                 <label for="editPassword">Password:</label>
                                 <input type="password" id="editPassword" name="editPassword"

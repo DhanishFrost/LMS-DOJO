@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 const adminSidebar = {
   template: `
   <div class="adminsidebar">
@@ -36,12 +43,15 @@ const adminSidebar = {
         <a href="./manage-students.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Students</a>  
         <a href="./manage-teachers.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Teachers</a>  
         <a href="./manage-admins.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Administrators</a>  
+        <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Subjects</a>  
+
 
         </div>
 
           <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
           <i class="fas "></i> 
-          <span class="text-[15px] ml-4 text-gray-200">Subjects</span>  
+          <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white text-[15px] ml-4 text-gray-200">Manage Subjects</a>
+        
           </div>
    
 
@@ -101,38 +111,83 @@ new Vue({
   el: '#app',
   data() {
     return {
+      showSubmissionsPopup: false,
+      TeacherclassOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
+      teacherclasses: [],
+      userSubjects: [],
       studentUsers: [],
+      classname: '',
       adminUsers: [],
       teacherUsers: [],
+      forclasses: [],
       events: [],
+      submissions: [],
+      activities: [],
+      subjects: [],
+      selectedSubjects: [],
+      Activity_ID: '',
+      ActivityID: '',
+      currentActivityID: '',
+      activitiesPerTeacher: [],
+      activitiesPerClass:[],
+      currentemail: '',
+      user:'',
+      activity: '',
       timetables: [],
       userName: '',
       studentClass: '',
       email: '',
       password: '',
       loginError: '',
+      showEditActivityPopup: false,
       openCreateUserPopup: false,
       showEditUserPopup: false,
       showEditEventPopup: false,
+      showEditSubjectPopup: false,
+      isFileInputDisabled: false,
+
       classOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
       user: {
         name: '',
         email: '',
         password: '',
         role: '',
-        class: ''
+        forclasses: '',
+        teacherclasses: [],
+        subjects: [],
+        selectedSubjects: [],
+
       },
       editedUser: {
         name: '',
         email: '',
         role: '',
         password: '',
-        class: ''
+        class: '',
+        teacherclasses: [],
+        selectedSubjects: [],
+      
       },
       successMessage: '',
       errors: {
         password: ''
       },
+      activity: {
+        activityName: '',
+        activityDescription: '',
+        dueDate: '',
+        submissiontime: '',
+        forclasses: [],
+        submissionLink: '',
+        downloadLink: '',
+        submissionGrade: '',
+        feedback: '',
+        createdBy: '',
+        Activity_ID: '',
+        submissionStatus: '',
+
+      },
+  
       event: {
         name: '',
         date: '',
@@ -150,6 +205,45 @@ new Vue({
         location: '',
         image: null,
       },
+
+      editedActivity:{
+        selectedActivityId:'',
+        activityName: '',
+        activityDescription: '',
+        dueDate: '',
+        submissiontime: '',
+        forclasses: [], 
+        Activity_ID: '',
+      
+      },
+
+      submission:{
+       submissionName: '',
+       submissionFile: null,
+       Activity_ID: '',
+       currentActivityID: '',
+
+      },
+
+      editedSubject:{
+        selectedSubjectId:'',
+        subjectName: '',
+        subjectCode: '',
+
+      },
+
+      
+
+      subject:{
+        subjectName: '',
+        subjectCode: '',
+      },
+
+      quiz: {
+        quizName: '',
+        SingleQuestion: [],
+      }
+
     };
   },
 
@@ -157,8 +251,19 @@ new Vue({
     this.getStudentUsers();
     this.getAdminUsers();
     this.getTeacherUsers();
+    this.getAllSubjects();
     this.getAllEvents();
+    this.getAllClasses();
+    //this.getAllActivities();
+    this.getActivitiesPerTeacher();
+    //this.getSubmissionsByActivity();
+    this.getActivitiesPerClass();
+    this.getAllSubmissions();
+
+
   },
+
+  
 
   created() {
     this.loadUserName();
@@ -208,6 +313,12 @@ new Vue({
   },
 
   methods: {
+   
+
+     //handleBeforeUnload(e) {
+     //localStorage.removeItem('Activity_ID');
+
+    //},
 
     validatePassword() {
       if (this.user.password.length < 8) {
@@ -224,6 +335,9 @@ new Vue({
         password: this.password,
       };
 
+      email = this.email
+      localStorage.setItem('Currentemail', email);
+      
       // Send the user data to the backend using an HTTP request
       // After successful login
       axios.post('/user/login', userData)
@@ -286,6 +400,9 @@ new Vue({
       };
     },
 
+
+    
+
     getStudentUsers() {
       axios.get('/admin/getStudentUsers')
         .then(response => {
@@ -334,6 +451,34 @@ new Vue({
       }
     },
 
+//quiz handler
+    addQuestion() {
+      this.quiz.SingleQuestion.push({
+          question: '',
+          options: '',
+          correctAnswer: ''
+      });
+  },
+
+
+    CreateQuiz() {
+      axios.post('/quiz/createQuiz', this.quiz)
+      .then(response => {
+        alert(response.data.message);
+        this.quiz.quizName = '';
+        this.quiz.SingleQuestion = [];
+        this.quiz.correctAnswer = '';
+        this.quiz.options = [];
+        console.log(response.data.data);
+      })
+      .catch(error => {
+        console.error(error);
+        alert('An error occurred while creating the quiz.');
+      });
+    },
+
+
+
     submitCreateUserForm() {
       this.validatePassword();
 
@@ -361,13 +506,14 @@ new Vue({
           this.user.password = '';
           this.user.role = '';
           this.user.class = '';
+          this.user.teacherclasses = [];
+          this.user.selectedSubjects = [];
         })
         .catch(error => {
           console.error(error);
           alert('An error occurred while creating the user.');
         });
     },
-
 
     openEditUserPopup(user) {
       console.log(this.user);
@@ -451,6 +597,445 @@ new Vue({
       return `${year}-${month}-${day}`;
     },
 
+   
+
+
+      //class handler
+
+      getAllClasses() {
+        const currentemail = localStorage.getItem('Currentemail');
+        console.log(currentemail)
+        axios.get(`/user/getAllClasses/${currentemail}`)
+  
+          .then(response => { 
+            console.log(response.data);
+            this.teacherclasses = response.data.classes.teacherclasses;
+           console.log(this.teacherclasses);
+          }).catch(error => {
+            console.error(error);
+          });
+  
+          
+      },
+
+
+    //activity Handler
+
+    
+    
+  submitCreateActivityForm() { 
+       const currentemail = localStorage.getItem('Currentemail');
+
+    // Set the currentemail to the activity object
+       this.activity.createdBy = currentemail;
+       console.log(currentemail);
+      axios.post('/activity/createActivity', this.activity)
+        .then(response => {
+          alert(response.data.message);
+          console.log("Created Activity Data:", response.data.data); 
+
+          this.activity.activityName = '';
+          this.activity.activityDescription = '';
+          this.activity.dueDate = '';
+          this.activity.submissiontime = '';
+          this.activity.forclasses = '';
+          this.activity.submissionLink = '';
+          this.activity.downloadLink = '';
+          this.activity.submissionGrade = '';
+          this.activity.feedback = '';
+          this.activity.createdBy = currentemail;
+          this.activity.Activity_ID = '';
+          
+
+        })
+        
+        .catch(error => {
+          console.error(error);
+          alert('An error occurred while creating the activity.');
+        });
+
+     },
+
+
+
+
+      
+    getAllActivities(){
+      axios.get('/activity/getAllactivities')
+      .then(response => {
+        console.log(response.data);
+        this.activities = response.data.data;
+      }
+      ).catch(error => {
+        console.error(error);
+      }
+      );
+
+    },
+
+    getActivitiesPerTeacher(){
+      const currentemail = localStorage.getItem('Currentemail');
+      console.log(currentemail)
+      axios.get(`/activity/getActivitiesPerTeacher/${currentemail}`)
+      .then(response => {
+        console.log(response.data);
+        this.activities = response.data.data;
+      }
+      ).catch(error => {
+        console.error(error);
+      }
+      );
+
+    },
+
+   
+  
+
+   
+
+    
+    getActivitiesPerClass(){
+      
+      
+      const studentclass = localStorage.getItem('studentClass');
+      console.log(studentclass);
+     axios.get(`/activity/getActivitiesPerClass/${studentclass}`)
+      .then(response => {
+        console.log(response.data);
+        this.activities = response.data.data;
+      
+      }
+      ).catch(error => {
+        console.error(error);
+      }
+      );
+
+    },
+
+
+    //submission handler
+    storeActivityID(Activity_ID){
+      currentActivityID = localStorage.setItem('Activity_ID', Activity_ID);
+      console.log(currentActivityID);
+      
+    },
+
+    submitCreateSubmissionForm(){
+
+      const currentemail = localStorage.getItem('Currentemail');
+      const currentActivityID = localStorage.getItem('Activity_ID');
+      const formData = new FormData();
+      formData.append("submissionName" , this.submission.submissionName)
+      formData.append("submissionFile" , this.submissionFile);
+      formData.append("submissionFile" , this.submissionFile.name);
+      formData.append("Activity_ID", currentActivityID); // Use the stored Activity_ID
+      formData.append("studentEmail", currentemail); // Use the stored student email
+      if (this.submissionFile != null) {
+        this.submissionStatus = 'Submitted';
+        
+      }
+      
+     axios.post(`/uploads`, formData)
+       .then(response => {
+        alert(response.data.message);
+        console.log(response.data.data);
+        console.log(this.submissionFile.name);
+        console.log(this.submission.Activity_ID);
+        console.log(currentActivityID);
+        console.log(currentemail);
+        console.log(this.submissionStatus);
+        localStorage.removeItem('Activity_ID');
+         this.isFileInputDisabled = true;
+        
+      }
+      ).catch(error => {
+        console.error(error);
+        alert('An error occurred while creating lala the submission.');
+      });
+    },
+
+
+/*
+
+
+      submitCreateSubmissionForm(){
+
+        const currentemail = localStorage.getItem('Currentemail');
+        const currentActivityID = localStorage.getItem('Activity_ID');
+        const formData = new FormData();
+        formData.append("submissionName" , this.submission.submissionName)
+        formData.append("submissionFile" , this.submissionFile);
+        formData.append("submissionFile" , this.submissionFile.name);
+        formData.append("Activity_ID", currentActivityID); // Use the stored Activity_ID
+        formData.append("studentEmail", currentemail); // Use the stored student email
+        
+        
+        
+       axios.post(`/uploads`, formData)
+  
+        .then(response => {
+          alert(response.data.message);
+          console.log(response.data.data);
+          console.log(this.submissionFile.name);
+          console.log(this.submission.Activity_ID);
+          console.log(currentActivityID);
+          console.log(currentemail);
+          localStorage.removeItem('Activity_ID');
+
+          axios.post('/activity/updateSubmissionStatus',{
+            Activity_ID: currentActivityID,
+            studentEmail: currentemail,
+            submissionStatus: 'Submitted'
+          } ). then(statusResponse => {
+            console.log(statusResponse.data);
+           
+          }
+          ).catch(error => {
+            console.error(error);
+            alert('An error occurred while updating the submission status.');
+          }
+          );
+          
+  
+        }
+        ).catch(error => {
+          console.error(error);
+          alert('An error occurred while creating lala the submission.');
+        });
+  
+  
+      },*/
+
+
+    /*window(){
+      window.location.href = `/primary-student/primary-student-dashboard?token=${token}`;
+      localStorage.removeItem('Activity_ID');
+
+    },*/
+
+
+    openUpdateActivityPopup(activity) {
+
+      this.editedActivity.selectedActivityId = activity._id;
+      this.editedActivity.activityName = activity.activityName;
+      this.editedActivity.activityDescription = activity.activityDescription;
+      this.editedActivity.dueDate = this.formatDate(activity.dueDate);
+      this.editedActivity.submissiontime = activity.submissiontime;
+      this.editedActivity.forclasses = activity.forclasses;
+      this.editedActivity.Activity_ID = activity.Activity_ID;
+      this.showEditActivityPopup = true;
+
+    },
+
+
+    submitEditActivityForm() {
+      const formData = new FormData();
+      formData.append('activityName', this.editedActivity.activityName);
+      formData.append('activityDescription', this.editedActivity.activityDescription);
+      formData.append('dueDate', this.editedActivity.dueDate);
+      formData.append('submissiontime', this.editedActivity.submissiontime);
+      formData.append('forclasses', this.editedActivity.forclasses);
+      formData.append('Activity_ID', this.editedActivity.Activity_ID);
+      //formData.append('Activity_ID', this.editedActivity.Activity_ID);
+
+      console.log(this.editedActivity);
+
+      axios.put(`/activity/updateActivity/${this.editedActivity.selectedActivityId}`, this.editedActivity)
+        .then((response) => {
+          this.showEditActivityPopup = false;
+          this.getActivitiesPerTeacher();  
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('Error updating activity:', error);
+        });
+
+    },
+
+
+    confirmDeleteActivity(activityId) {
+      if (confirm('Are you sure you want to delete this activity?')) {
+        this.deleteActivity(activityId);
+      }
+
+    },
+
+
+
+
+    deleteActivity(activityId) {
+      axios.delete(`/activity/deleteActivity/${activityId}`)
+
+        .then(response => {
+          console.log(response.data);
+          this.getActivitiesPerTeacher();
+          
+          
+          
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+ 
+
+//submission handler
+
+confirmDeleteSubmission(submissionId) {
+  if (confirm('Are you sure you want to delete this submission?')) {
+    this.deleteSubmission(submissionId);
+  }
+},
+
+deleteSubmission(submissionId) {
+  axios.delete(`/uploads/deleteSubmission/${submissionId}`)
+    .then(response => {
+      console.log(response.data);
+      this.showSubmissionsPopup = false;
+     
+      
+     
+    })
+    .catch(error => {
+      console.error(error);
+    });
+},
+
+
+
+
+    viewSubmissionsForActivity (Activity_ID) {
+      this.showSubmissionsPopup = true;
+      this.getSubmissionsByActivity(Activity_ID);
+
+    },
+
+
+    getSubmissionsByActivity(Activity_ID){
+      axios.get(`/uploads/getSubmissionsByActivity/${Activity_ID}`)
+      .then(response => {
+        console.log(response.data);
+        this.submissions = response.data.data;
+      }
+      ).catch(error => {
+        console.error(error);
+      }
+      );
+    },
+
+
+
+
+
+    onFileChangeCreateSubmission(event){
+      console.log(event.target.files[0]);
+      this.submissionFile = event.target.files[0];
+      console.log('Selected file:', this.submissionFile); // Log the selected file to verify
+
+      
+      },
+    
+
+    getAllSubmissions(){
+      axios.get('/uploads/getAllSubmissions')
+      .then(response => {
+        console.log(response.data);
+        this.submissions = response.data.data;
+      }
+      ).catch(error => {
+        console.error(error);
+       } );
+
+      },
+
+
+      //subject handler
+
+
+         
+    submitCreateSubjectForm() {
+      axios.post('/subject/createSubject', this.subject)
+       
+         .then(response => {
+           alert(response.data.message);
+ 
+         })
+         .catch(error => {
+           console.error(error);
+           alert('An error occurred while creating the subject.');
+         });
+       
+     },
+
+     getAllSubjects(){
+      axios.get('/subject/getAllSubjects')
+      .then(response => {
+        console.log(response.data);
+        this.subjects = response.data.data;
+      }
+      ).catch(error => {
+        console.error(error);
+      }
+      );
+     },
+
+
+
+     openEditSubjectPopup(subject) {
+      this.editedSubject.selectedSubjectId = subject._id;
+      this.editedSubject.subjectName = subject.subjectName;
+      this.editedSubject.subjectCode = subject.subjectCode;
+      this.showEditSubjectPopup = true;
+    },
+
+    submitEditSubjectForm() {
+
+      const formData = new FormData();
+      formData.append('subjectName', this.editedSubject.subjectName);
+      formData.append('subjectCode', this.editedSubject.subjectCode);
+
+
+      axios.put(`/subject/updateSubject/${this.editedSubject.selectedSubjectId}`, this.editedSubject)
+
+        .then(response => {
+          this.showEditSubjectPopup = false;
+          this.getAllSubjects();
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('Error updating subject:', error);
+        });
+      },
+
+
+      confirmDeleteSubject(subjectId) {
+        if (confirm('Are you sure you want to delete this subject?')) {
+          this.deleteSubject(subjectId);
+        }
+
+      },
+
+     
+    deleteSubject(subjectId) {
+      axios.delete(`/subject/deleteSubject/${subjectId}`)
+
+        .then(response => {
+          console.log(response.data);
+          this.getAllSubjects();
+        })
+        .catch(error => {
+          console.error(error); 
+        });
+    },
+
+
+
+
+
+
+//event handler
+
     submitCreateEventForm() {
       const formData = new FormData();
       formData.append("eventName", this.event.name);
@@ -471,6 +1056,8 @@ new Vue({
           alert('An error occurred while creating the event.');
         });
     },
+
+   
 
 
 
@@ -494,6 +1081,9 @@ new Vue({
       this.event.image = null;
     },
 
+
+
+
     onFileChangeEditEvent(e) {
       console.log(e.target.files[0]);
       this.editedEvent.image = e.target.files[0];
@@ -510,12 +1100,18 @@ new Vue({
       this.showEditEventPopup = true;
     },
 
+
+
+
+
     onEditFileChange(event) {
       const fileInput = event.target;
       if (fileInput.files.length > 0) {
         this.editedEvent.eventImage = fileInput.files[0].name;
       }
     },
+
+
 
     submitEditEventForm() {
       const formData = new FormData();
@@ -537,6 +1133,9 @@ new Vue({
         });
     },
 
+
+
+
     deleteEvent(eventId) {
       axios.delete(`/event/deleteEvent/${eventId}`)
         .then(response => {
@@ -547,6 +1146,13 @@ new Vue({
           console.error(error);
         });
     },
+
+
+
+
+
+
+
 
 
     // Timetable handler
@@ -561,6 +1167,9 @@ new Vue({
       };
     },
 
+
+     
+
     getAllTimetables() {
       const studentClass = localStorage.getItem('studentClass');
       console.log(studentClass)
@@ -574,10 +1183,13 @@ new Vue({
         });
     },
 
+   
+
     handleLogout() {
       localStorage.removeItem('token');
       localStorage.removeItem('userName');
       localStorage.removeItem('studentClass');
+      localStorage.removeItem('Activity_ID');
 
       window.location.href = '/';
     }

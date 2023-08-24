@@ -1,3 +1,5 @@
+
+const { tryParse } = require('selenium-webdriver/http');
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -57,6 +59,9 @@ module.exports.createUser = (userDetails) => {
                 userModelData.email = userDetails.email;
                 userModelData.role = userDetails.role;
                 userModelData.class = userDetails.class;
+                userModelData.teacherclasses = userDetails.teacherclasses;
+                userModelData.selectedSubjects = userDetails.selectedSubjects;
+               
 
                 // Hash the password
                 bcrypt.hash(userDetails.password, saltRounds, function (err, hash) {
@@ -89,6 +94,8 @@ module.exports.updateUser = (email, userDetails) => {
         user.email = userDetails.email;
         user.role = userDetails.role;
         user.class = userDetails.class;
+        user.selectedSubjects = userDetails.selectedSubjects;
+        user.teacherclasses = userDetails.teacherclasses;
 
         // Checking if the password field is empty
         if (userDetails.password !== undefined && userDetails.password !== "") {
@@ -113,6 +120,42 @@ module.exports.updateUser = (email, userDetails) => {
       .catch(error => reject(error));
   });
 };
+
+
+
+
+
+
+module.exports.getAllClasses = async (userEmail) => {
+  
+  try {
+
+    const user = await User.findOne({email: userEmail , role: "teacher"});
+   
+    if (!user) {
+      return { success: false, message: 'There is no such user' };
+    }
+    
+    const teacherclasses = user.teacherclasses;
+    if(!teacherclasses){
+      return { success: false, message: 'You are not a teacher' };
+    }
+
+    return { success: true, teacherclasses };
+    
+  } catch (error) {
+    console.error(error.message);
+    return { success: false, message: 'Server Error' };
+    
+  }
+}
+
+
+
+
+
+
+
 
 
 module.exports.deleteUser = (email) => {

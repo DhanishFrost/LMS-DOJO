@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
@@ -85,6 +86,34 @@
                                     <option value="teacher">Teacher</option>
                                 </select>
                             </div>
+
+
+
+
+                            <div class="mt-4">
+                                <label for="teacherclasses">Classes:</label>
+                                <div class="flex flex-col scrollable-list" id="teacherclasses" name="teacherclass">
+                                    <label v-for="TclassOption in TeacherclassOptions" :key="TclassOption">
+                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"
+                                               :value="TclassOption" v-model="user.teacherclasses">
+                                        <span class="ml-2 text-gray-700">{{ TclassOption }}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                              
+                            <div class="mt-4">
+                                <label for="">Selected classes</label>
+                                <ul class="flex flex-col scrollable-list" id="teacherclasses" name="teacherclasses" >
+                                    <li v-for="teacherclass in user.teacherclasses" :key="teacherclass">
+                                        <span>{{ teacherclass }}</span>
+                                        <span>{{user.teacherclasses}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+
                             <div class="mt-4">
                                 <label for="password">Password:</label>
                                 <input type="password" id="password" name="password"
@@ -133,6 +162,23 @@
                                     class="border border-gray-300 rounded-md p-2" v-model="editedUser.password"
                                     @blur="validatePassword" placeholder="Update passoword if required">
                             </div>
+
+                            <div class="mt-4">
+                                <label for="editteacherclasses">TeacherClasses</label>
+                                <div class="flex flex-col scrollable-list" id="editSelectedSubjects" name="editSelectedSubject">
+                                    <label v-for="TclassOption in TeacherclassOptions" :key="TclassOption">
+                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"
+                                               :value="TclassOption" v-model="editedUser.teacherclasses">
+                                        <span class="ml-2 text-gray-700">{{ TclassOption }}</span>
+                                    </label>
+
+=
+
+                            </div>
+
+
+
+
                             <div class="mt-4">
                                 <button type="button"
                                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

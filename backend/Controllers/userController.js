@@ -131,4 +131,18 @@ var deleteUser = async (req, res) => {
 
 
 
-module.exports = { login, getStudentUsers, getAdminUsers, getTeacherUsers, createUser, updateUser, deleteUser };
+var getAllClasses = async (req, res) => {
+    var email = req.params.email;
+    var classes = await userService.getAllClasses(email);
+    if (classes) {
+        res.send({ "status": true, "message": "Classes found", classes });
+    }
+    else {
+        res.send({ "status": false, "message": "Error finding Classes" });
+    }
+    
+
+}
+
+
+module.exports = { login, getStudentUsers, getAdminUsers, getTeacherUsers, createUser, updateUser, deleteUser, getAllClasses };

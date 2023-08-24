@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+</head>
+<body>
+    <div id="app">
+        <form @submit.prevent="CreateQuiz">
+            <div>
+                <label for="quizName">Quiz name:</label>
+                <input type="text" id="quizName" v-model="quiz.quizName"  class="border border-gray-300 rounded-md p-2" required>
+            </div>
+            <div v-for="(question, index) in quiz.SingleQuestion" :key="index">
+                <label :for="'question-' + index">Question:</label>
+                <input :id="'question-' + index" type="text" v-model="question.question"  class="border border-gray-300 rounded-md p-2" required>
+                
+                <label :for="'options-' + index">Options (comma-separated):</label>
+                <input :id="'options-' + index" type="text" v-model="question.options"  class="border border-gray-300 rounded-md p-2" required>
+                
+                <label :for="'correctAnswer-' + index">Correct Answer:</label>
+                <input :id="'correctAnswer-' + index" type="number" v-model="question.correctAnswer"  class="border border-gray-300 rounded-md p-2" required>
+            </div>
+            <button type="button" @click="addQuestion">Add Question</button>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="../app.js"></script>
+</body>
+</html>
