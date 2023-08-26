@@ -2,3 +2,14 @@
     max-height: 200px; /* Adjust the maximum height as needed */
     overflow-y: auto;
 }  
+
+
+
+#activity-box{
+    border-color: #22A699;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+
+
+}

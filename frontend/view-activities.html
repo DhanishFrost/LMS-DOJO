@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../../LMS-DOJO-2/frontend/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 
@@ -18,7 +19,7 @@
                 <span class="border-b-4 border-orange-500">Dashboard</span></a>
             </ul>
             <ul class="text-sm flex-grow font-bold "><a href="#">Timetable</a></ul>
-            <ul class="text-sm flex-grow font-bold "><a href="../../view-activities.html">My Activities</a></ul>
+            <ul class="text-sm flex-grow font-bold "><a href="#">My Activities</a></ul>
             <ul class="text-sm flex-grow font-bold "><a href="#">Event Calendar</a></ul>
           </div>
           
@@ -78,7 +79,6 @@
                 
                         </tr>
                       </tbody>-->
-                      <div v-for="activity in activities" :key="activity.id">
                      <!--- <div class="mt-2 max-w-sm w-full lg:max-w-full lg:flex" >
                       
                         <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
@@ -98,12 +98,13 @@
                         </div>
                       </div>-->
                     
+                      <div v-for="activity in activities" :key="activity.id">
 
 
-                    <div class="max-w-sm w-full lg:max-w-full lg:flex">
-                      <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+                    <div class=" w-full lg:h-52 ">
+                      <div id="activity-box" class=" lg:h-auto lg:w-60 mt-4  bg-cover lg:rounded-t-none lg:rounded-l text-center overflow-hidden bg-white">
                       </div>
-                      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                      <div class="ml-2  mr-2 border-r border-b border-l border-orange-400  lg:border-t lg:border-orange-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                         <div class="mb-1">
                          
                           <div class="text-gray-900 font-bold text-xl mb-2">{{ activity.activityName }}</div>

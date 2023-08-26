@@ -48,11 +48,7 @@ const adminSidebar = {
 
         </div>
 
-          <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
-          <i class="fas "></i> 
-          <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white text-[15px] ml-4 text-gray-200">Manage Subjects</a>
-        
-          </div>
+      
    
 
 
@@ -124,6 +120,7 @@ new Vue({
       submissions: [],
       activities: [],
       subjects: [],
+      searchQuery:  '',
       selectedSubjects: [],
       Activity_ID: '',
       ActivityID: '',
@@ -304,6 +301,17 @@ new Vue({
       }
 
       return newTimetableData;
+    },
+
+    filteredSubjects() {
+      // Filter the subjects based on the search query
+      return this.subjects.filter(subject => {
+        const normalizedQuery = this.searchQuery.toLowerCase();
+        return (
+          subject.subjectName.toLowerCase().includes(normalizedQuery) ||
+          subject.subjectCode.toLowerCase().includes(normalizedQuery)
+        );
+      });
     },
 
   },
