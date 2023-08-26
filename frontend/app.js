@@ -26,8 +26,9 @@ const adminSidebar = {
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
           <i class="fas fa-home"></i> 
           <span class="text-[15px] ml-4 text-gray-200">
-         <a href="./admin-dashboard.html">Dashboard</a></span>  
-        </div>
+
+          <a href="./admin-dashboard.html">Dashboard</a></span>  
+          </div>
 
           <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white " @click="dropdown()">
           <i class="fas fa-user"></i> 
@@ -41,22 +42,18 @@ const adminSidebar = {
       <div class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-gray-200 flex flex-col hidden" id="submenu">
         <a href="./manage-students.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Students</a>  
         <a href="./manage-teachers.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Teachers</a>  
-        <!--<a href="./manage-admins.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Administrators</a>  -->
+        <a href="./manage-admins.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Administrators</a>  
         <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Subjects</a>  
-      </div>
 
-        
-   
 
-       <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
-       <i class="fa-solid fa-list-check"></i>
-       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-kanban-fill" viewBox="0 0 16 16">
-       <path d="M2.5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-11zm5 2h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm-5 1a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm9-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/>
-       </svg>
-          <span class="text-[15px] ml-4 text-gray-200">
-          <a href="./manage-subjects.html" class="cursor pointer p-2  rounded-md mt-1 hover:text-white">Manage Subjects</a>
-          </span>  
         </div>
+
+          <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
+          <i class="fas "></i> 
+          <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white text-[15px] ml-4 text-gray-200">Manage Subjects</a>
+        
+          </div>
+   
 
 
       
@@ -114,11 +111,6 @@ new Vue({
   el: '#app',
   data() {
     return {
-      quiz: null, // Initialize quiz as null
-      currentQuestionIndex: 0,
-      selectedOptionIndex: null,
-      score: 0,
-      searchText: '',
       showSubmissionsPopup: false,
       TeacherclassOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
       teacherclasses: [],
@@ -133,7 +125,6 @@ new Vue({
       activities: [],
       subjects: [],
       selectedSubjects: [],
-      ActivityselectedSubjects: [],
       Activity_ID: '',
       ActivityID: '',
       currentActivityID: '',
@@ -154,7 +145,6 @@ new Vue({
       showEditEventPopup: false,
       showEditSubjectPopup: false,
       isFileInputDisabled: false,
-      showCreateSubjectPopup: false,
 
       classOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
       user: {
@@ -195,8 +185,6 @@ new Vue({
         createdBy: '',
         Activity_ID: '',
         submissionStatus: '',
-        subject: '',
-        ActivityselectedSubjects: [],
 
       },
 
@@ -253,16 +241,8 @@ new Vue({
 
       quiz: {
         quizName: '',
-        SingleQuestion: [
-          {
-            question: '',
-            options: [],
-            correctAnswer: ''
-          }
-        ]
-      },
-
-
+        SingleQuestion: [],
+      }
 
     };
   },
@@ -274,7 +254,6 @@ new Vue({
     this.getAllSubjects();
     this.getAllEvents();
     this.getAllClasses();
-    this.getAllSubjects();
     //this.getAllActivities();
     this.getActivitiesPerTeacher();
     //this.getSubmissionsByActivity();
@@ -290,30 +269,9 @@ new Vue({
     this.loadUserName();
     this.getAllTimetables();
     this.loadClassName();
-    this.getQuiz();
   },
 
   computed: {
-
-    filteredSubjects() {
-      return this.subjects.filter(subject => {
-          const searchTerm = this.searchText.toLowerCase();
-          return subject.subjectName.toLowerCase().includes(searchTerm) ||
-                 subject.subjectCode.toLowerCase().includes(searchTerm);
-      });
-  },
-    quizLength() {
-      if (this.quiz && this.quiz.SingleQuestion && Array.isArray(this.quiz.SingleQuestion)) {
-        return this.quiz.SingleQuestion.length;
-      }
-      return 0;
-    },
-    currentQuestion() {
-      if (this.quiz && this.quiz.SingleQuestion && Array.isArray(this.quiz.SingleQuestion) && this.quizLength > this.currentQuestionIndex) {
-        return this.quiz.SingleQuestion[this.currentQuestionIndex];
-      }
-      return null;
-    },
     isEmailValid() {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailPattern.test(this.user.email);
@@ -347,7 +305,7 @@ new Vue({
 
       return newTimetableData;
     },
-  
+
   },
 
   watch: {
@@ -355,7 +313,7 @@ new Vue({
   },
 
   methods: {
-   
+
 
     //handleBeforeUnload(e) {
     //localStorage.removeItem('Activity_ID');
@@ -480,9 +438,6 @@ new Vue({
       this.openCreateUserPopup = true;
     },
 
-
-  
-
     updateClassOptions() {
       if (this.user.role === 'pStudent') {
         this.classOptions = ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C'];
@@ -522,34 +477,6 @@ new Vue({
         });
     },
 
-    getQuiz() {
-      const array = this.quiz.SingleQuestion.length;
-      axios.get('/quiz/getQuiz')
-        .then(response => {
-          console.log('heres the quiz', response.data);
-          this.quiz = response.data;
-          console.log(array)
-        }
-        ).catch(error => {
-          console.error(error);
-        }
-        );
-
-
-    },
-
-
-    checkAnswer() {
-      if (
-        this.selectedOptionIndex !== null &&
-        parseInt(this.selectedOptionIndex) ===
-        parseInt(this.quiz.SingleQuestion[this.currentQuestionIndex].correctAnswer)
-      ) {
-        this.score++;
-      }
-      this.currentQuestionIndex++;
-      this.selectedOptionIndex = null;
-    },
 
 
     submitCreateUserForm() {
@@ -697,22 +624,6 @@ new Vue({
     },
 
 
-    getAllSubjects() {
-      const currentemail = localStorage.getItem('Currentemail');
-      console.log(currentemail)
-      axios.get(`/user/getAllSubjects/${currentemail}`)
-
-        .then(response => {
-          console.log(response.data);
-          this.selectedSubjects = response.data.subjects.selectedSubjects;
-          console.log(this.selectedSubjects);
-        }).catch(error => {
-          console.error(error);
-        });
-
-
-    },
-
     //activity Handler
 
 
@@ -739,7 +650,7 @@ new Vue({
           this.activity.feedback = '';
           this.activity.createdBy = currentemail;
           this.activity.Activity_ID = '';
-          
+
 
         })
 
@@ -1044,25 +955,27 @@ new Vue({
     },
 
 
-      //subject handler
+    //subject handler
 
 
-         
+
     submitCreateSubjectForm() {
       axios.post('/subject/createSubject', this.subject)
-       
-         .then(response => {
-           alert(response.data.message);
- 
-         })
-         .catch(error => {
-           console.error(error);
-           alert('An error occurred while creating the subject.');
-         });
-       
-     },
+        .then(response => {
+         alert(response.data.message);
+          if (response.data.status) {
+            window.location.href = '/admin/manage-subjects.html';
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('An error occurred while creating the subject.');
+          window.location.href = '/admin/manage-subjects.html';
+        });
+    },
 
-     getAllSubjects(){
+
+    getAllSubjects() {
       axios.get('/subject/getAllSubjects')
         .then(response => {
           console.log(response.data);
