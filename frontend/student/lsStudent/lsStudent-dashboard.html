@@ -13,15 +13,19 @@
 
 </head>
 
-
-<header>
+<body>
+  <header>
     <div class="flex border-b border-black h-4/5"> 
         <div class="flex w-3/5 p-4 items-center">
             <ul class="text-sm flex-grow ml-12 font-bold "><a href="#">
                 <span class="border-b-4 border-orange-500">Dashboard</span></a>
             </ul>
             <ul class="text-sm flex-grow font-bold "><a href="#">Timetable</a></ul>
+<<<<<<< HEAD
             <ul class="text-sm flex-grow font-bold "><a href="../../view-activities.html">My Activities</a></ul>
+=======
+            <ul class="text-sm flex-grow font-bold "><a href="#">My Activities</a></ul>
+>>>>>>> 62911ed24aed98d8119fc0a064581a3f83c0fd7f
             <ul class="text-sm flex-grow font-bold "><a href="#">Event Calendar</a></ul>
           </div>
           
@@ -38,10 +42,6 @@
 </header>
 
 
-
-
-<body>
-<div id="app">
     <div class="grid grid-cols-2 sm:grid-cols-3 justify-between m-8 justify-items-center gap-8">
         <!-- Add your 7 grid items here -->
         <div class="relative w-60 h-40 overflow-hidden rounded-md border border-black shadow-xl opacity-4 hover:opacity-60 transition-opacity duration-300 ease-in-out">
@@ -68,6 +68,7 @@
           <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
             <p class="text-center text-xl font-medium">Geography</p>
           </div>
+<<<<<<< HEAD
 
           <ul v-for="selectedSubject in selectedSubjects" :key="selectedSubject">
             <li> {{selectedSubject}}</li>
@@ -77,21 +78,19 @@
 
         <!--<a href="../../view-activities.html">View activities</a>-->
        <!--- <a href="../../add-Submission.html">Add submission</a>--->
+=======
+        </div>
+      </div>
+>>>>>>> 62911ed24aed98d8119fc0a064581a3f83c0fd7f
       
 
-
-
-          
-      </div>
-    </div>
-  
-      <script src="../../app.js"></script>
+      <footer class="bg-stone-400 h-52 flex flex-col">
+        <h1 class="ml-8 mt-8 text-white">About us</h1>
+        <h1 class="ml-8 text-white">Contact us</h1>
+        <h1 class="ml-8 text-white">Log out</h1>
+       </footer>
  
 </body>
 
-<footer class="bg-stone-400 h-52 flex flex-col">
- <h1 class="ml-8 mt-8 text-white">About us</h1>
- <h1 class="ml-8 text-white">Contact us</h1>
- <h1 class="ml-8 text-white">Log out</h1>
-</footer>
+
 </html>

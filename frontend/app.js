@@ -347,9 +347,7 @@ new Vue({
 
       return newTimetableData;
     },
-
-
-
+  
   },
 
   watch: {
@@ -357,36 +355,7 @@ new Vue({
   },
 
   methods: {
-
-    async downloadFile(filename) {
-      try {
-        const encodedFilename = encodeURIComponent(filename);
-        const response = await axios.get(`/download?filename=${encodedFilename}`, {
-          responseType: 'blob',
-        });
-    
-        const blob = new Blob([response.data], { type: 'application/octet-stream' });
-    
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-    
-        // Decode the filename before setting it as the download attribute
-        const decodedFilename = decodeURIComponent(filename);
-        downloadLink.download = decodedFilename;
-    
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    
-        URL.revokeObjectURL(downloadLink.href);
-    
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    
-    ,
-
+   
 
     //handleBeforeUnload(e) {
     //localStorage.removeItem('Activity_ID');
@@ -667,22 +636,27 @@ new Vue({
     },
 
     deleteUser(email) {
-      axios.delete(`/admin/deleteUser/${email}`)
-        .then(response => {
-          console.log(response.data);
-          // Update the user list based on role
-          if (this.adminUsers.find(user => user.email === email)) {
-            this.adminUsers = this.adminUsers.filter(user => user.email !== email);
-          } else if (this.teacherUsers.find(user => user.email === email)) {
-            this.teacherUsers = this.teacherUsers.filter(user => user.email !== email);
-          } else if (this.studentUsers.find(user => user.email === email)) {
-            this.studentUsers = this.studentUsers.filter(user => user.email !== email);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      const confirmed = window.confirm(`Are you sure you want to delete the user with email ${email}?`);
+
+      if (confirmed) {
+        axios.delete(`/admin/deleteUser/${email}`)
+          .then(response => {
+            console.log(response.data);
+            // Update the user list based on role
+            if (this.adminUsers.find(user => user.email === email)) {
+              this.adminUsers = this.adminUsers.filter(user => user.email !== email);
+            } else if (this.teacherUsers.find(user => user.email === email)) {
+              this.teacherUsers = this.teacherUsers.filter(user => user.email !== email);
+            } else if (this.studentUsers.find(user => user.email === email)) {
+              this.studentUsers = this.studentUsers.filter(user => user.email !== email);
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
     },
+
 
 
 
@@ -765,8 +739,7 @@ new Vue({
           this.activity.feedback = '';
           this.activity.createdBy = currentemail;
           this.activity.Activity_ID = '';
-          this.activity.ActivityselectedSubjects = [];
-
+          
 
         })
 
@@ -1071,24 +1044,25 @@ new Vue({
     },
 
 
-    //subject handler
-    
+      //subject handler
+
+
+         
     submitCreateSubjectForm() {
       axios.post('/subject/createSubject', this.subject)
+       
+         .then(response => {
+           alert(response.data.message);
+ 
+         })
+         .catch(error => {
+           console.error(error);
+           alert('An error occurred while creating the subject.');
+         });
+       
+     },
 
-        .then(response => {
-          alert(response.data.message);
-         
-        
-        })
-        .catch(error => {
-          console.error(error);
-          alert('An error occurred while creating the subject.');
-        });
-
-    },
-
-    getAllSubjects() {
+     getAllSubjects(){
       axios.get('/subject/getAllSubjects')
         .then(response => {
           console.log(response.data);
