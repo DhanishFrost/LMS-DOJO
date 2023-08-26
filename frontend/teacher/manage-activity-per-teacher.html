@@ -184,7 +184,7 @@
 
 
 
-<<<<<<< HEAD
+
   <div v-if="showSubmissionsPopup" class=" inset-0 flex items-center justify-center bg-black bg-opacity-50" >
    <div class="popup-content">
     <h2>Submissions</h2>
@@ -211,43 +211,16 @@
           </td>
         </tr>
       </tbody>
-=======
-    <div v-if="showSubmissionsPopup" class=" inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="popup-content">
-        <h2>Submissions</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Submission Name</th>
-              <th>Submission File</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="submission in submissions" :key="submission._id">
-              <td>{{submission.submissionName}}</td>
-              <td>{{submission.submissionFile}}</td>
-              <td> <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                  @click="confirmDeleteSubmission(submission._id)">
-                  Delete
-                </button></td>
-            </tr>
-          </tbody>
 
-          <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2"
-            @click="showSubmissionsPopup = false">Close
-          </button>
 
-        </table>
 
-      </div>
-    </div>
 
->>>>>>> 62911ed24aed98d8119fc0a064581a3f83c0fd7f
 
 
 
   </div>
-
+</div>
+</div>
 
 
 

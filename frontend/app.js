@@ -314,6 +314,33 @@ new Vue({
 
   methods: {
 
+    async downloadFile(filename) {
+      try {
+        const encodedFilename = encodeURIComponent(filename);
+        const response = await axios.get(`/download?filename=${encodedFilename}`, {
+          responseType: 'blob',
+        });
+    
+        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+    
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+    
+        // Decode the filename before setting it as the download attribute
+        const decodedFilename = decodeURIComponent(filename);
+        downloadLink.download = decodedFilename;
+    
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    
+        URL.revokeObjectURL(downloadLink.href);
+    
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
 
     //handleBeforeUnload(e) {
     //localStorage.removeItem('Activity_ID');
