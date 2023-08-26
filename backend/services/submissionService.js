@@ -28,15 +28,7 @@ module.exports.getAllSubmissions = () => {
     );
 }
 
-module.exports.download = (submission_id) => {
-    return new Promise((resolve, reject) => {
-        Submission.findById(submission_id)
-            .then((submission) => resolve(submission))
-            .catch((error) => reject(error));
-    });
 
-
-}
 
 
 module.exports.getSubmissionsByActivity = (Activity_ID) => {

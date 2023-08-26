@@ -140,9 +140,19 @@ var getAllClasses = async (req, res) => {
     else {
         res.send({ "status": false, "message": "Error finding Classes" });
     }
-    
+  
+}
 
+var getAllSubjects = async (req, res) => {
+    var email = req.params.email;
+    var subjects = await userService.getAllSubjects(email);
+    if (subjects) {
+        res.send({ "status": true, "message": "Subjects found", subjects });
+    }
+    else {
+        res.send({ "status": false, "message": "Error finding Subjects" });
+    }
 }
 
 
-module.exports = { login, getStudentUsers, getAdminUsers, getTeacherUsers, createUser, updateUser, deleteUser, getAllClasses };
+module.exports = { login, getStudentUsers, getAdminUsers, getTeacherUsers, createUser, updateUser, deleteUser, getAllClasses , getAllSubjects };

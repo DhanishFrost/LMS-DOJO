@@ -50,6 +50,33 @@
                         </div>-->
 
 
+                        <div>
+                            <div class="mt-4">
+                              <label for="ActivityselectedSubjects">Subjects:</label>
+                              <div class="flex flex-col scrollable-list" id="ActivityselectedSubjects" name="ActivityselectedSubject">
+                                <label v-for="subject in subjects" :key="subject.id">
+                                  <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"
+                                    :value="subject.subjectName" v-model="activity.ActivityselectedSubjects">
+                                  <span class="ml-2 text-gray-700">{{ subject.subjectName }}</span>
+                                </label>
+                              </div>
+                            </div>
+                        
+                            <div class="mt-4">
+                              <label for="">Selected subjects:</label>
+                              <div class="flex flex-col scrollable-list" id="subject" name="subject">
+                                <label v-for="subject in activity.ActivityselectedSubjects" :key="subject">
+                                      <span class="ml-2 text-gray-700">{{ subject}}</span>
+                                      <!--<span class="ml-2 text-gray-700">{{ activity.ActivityselectedSubjects}}</span>-->
+
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+
+
+
                     <div class="mt-4">
                             <label for="forclasses">Classes:</label>
                             <div class="flex flex-col scrollable-list" id="forclasses" name="forclasses">
@@ -78,33 +105,33 @@
                         </div>-->
 
                         <div class="flex flex-col mb-4">
-                            <label for="submissionLink" class="text-gray-700">Submission Link</label>
+                            <label for="submissionLink" class="text-gray-700"></label>
                             <input type="text" id="submissionLink" name="submissionLink" v-model="activity.submissionLink"
                                 class="border border-gray-300 rounded-md p-2" hidden>
                         </div>
 
 
                         <div class="flex flex-col mb-4">
-                            <label for="downloadLink" class="text-gray-700">Download Link</label>
+                            <label for="downloadLink" class="text-gray-700"></label>
                             <input type="text" id="downloadLink" name="downloadLink" v-model="activity.downloadLink"
                                 class="border border-gray-300 rounded-md p-2" hidden>
                         </div>
 
                         <div class="flex flex-col mb-4">
-                            <label for="submissionGrade" class="text-gray-700">Submission Grade</label>
+                            <label for="submissionGrade" class="text-gray-700"></label>
                             <input type="text" id="submissionGrade" name="submissionGrade" v-model="activity.submissionGrade"
                                 class="border border-gray-300 rounded-md p-2" hidden>
                         </div>
 
 
                         <div class="flex flex-col mb-4">
-                            <label for="feedback" class="text-gray-700">feedback</label>
+                            <label for="feedback" class="text-gray-700"></label>
                             <input type="text" id="feedback" name="feedback" v-model="activity.feedback"
                                 class="border border-gray-300 rounded-md p-2" hidden>
                         </div>
 
                         <div class="flex flex-col mb-4">
-                            <label for="createdBy" class="text-gray-700">Created by</label>
+                            <label for="createdBy" class="text-gray-700"></label>
                             <input type="text" id="createdBy" name="createdBy" v-model="activity.createdBy"
                                 class="border border-gray-300 rounded-md p-2" disabled hidden>
                         </div>

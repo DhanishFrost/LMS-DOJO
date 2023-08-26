@@ -20,7 +20,7 @@ const SubmissionStorage = multer.diskStorage({
       cb(null , path.join( "./submissionUploads"))
   },
   filename: (req, file, cb) => {
-      cb(null , `${Date.now()}-${file.originalname}`)
+      cb(null , `${file.originalname}`)
   }
 
 });
@@ -82,7 +82,7 @@ router.route('/admin/deleteUser/:email').delete(userController.deleteUser);
 
 //Classes Route
 router.route('/user/getAllClasses/:email').get(userController.getAllClasses);
-
+router.get('/user/getAllSubjects/:email' , userController.getAllSubjects);
 
 
 //Event Route
@@ -107,9 +107,9 @@ router.delete('/activity/deleteActivity/:activityId', activityController.deleteA
 //submission Routes
 router.post('/uploads', SubmissionUpload.single('submissionFile'), submissionController.createSubmission);
 router.get('/uploads/getAllSubmissions', submissionController.getAllSubmissions);
-router.get('/uploads/download/:id', submissionController.download);
 router.get('/uploads/getSubmissionsByActivity/:Activity_ID', submissionController.getSubmissionsByActivity);
 router.delete('/uploads/deleteSubmission/:submissionId', submissionController.deleteSubmission);
+
 // Timetable Routes
 
 router.get('/timetable/getClassTimetables/:studentClass', timeTableController.getClassTimetables);

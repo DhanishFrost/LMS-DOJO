@@ -9,7 +9,20 @@ module.exports.createSubject = (subjectDetails) => {
         });
         subject.save()
             .then((savedSubject) => resolve(savedSubject))
-            .catch((error) => reject(error));
+            .catch((error) =>{
+                if (error.name === 'ValidationError') {
+                    // Handle validation errors
+                    const validationErrors = {};
+                    for (const field in error.errors) {
+                        validationErrors[field] = error.errors[field].message;
+                        console.log(validationErrors);
+ 
+                    }
+                    reject({ validationErrors });
+                } else {
+                    reject(error);
+                }}
+            );
     });
 }   
 

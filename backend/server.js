@@ -14,7 +14,7 @@ const ActviityService = require('./services/ActivityService');
 const { updateSubmissionStatus } = require('./services/ActivityService');
 var readlineSync = require('readline-sync');
 //const submissionService = require('./services/submissionService');
-
+const fs = require('fs');
 
 
 // Set up multer
@@ -102,5 +102,36 @@ app.post('/uploads' , SubmissionUpload.single('submissionFile') , (req, res) => 
     return res.send(req.file);
     
 
+});
+
+app.get('/download', (req, res) => {
+    const filename = req.query.filename;
+    const filePath = path.join(__dirname, 'submissionUploads', filename);
+
+    // Determine the appropriate content type based on the file extension
+    let contentType = 'application/octet-stream'; // Default content type
+
+    if (filename.endsWith('.pdf')) {
+        contentType = 'application/pdf';
+    } else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) {
+        contentType = 'image/jpeg';
+    } else if (filename.endsWith('.png')) {
+        contentType = 'image/png';
+    } else if (filename.endsWith('.doc') || filename.endsWith('.docx')) {
+        contentType = 'application/msword'; // For Word documents
+    }
+
+    const contentDisposition = `attachment; filename="${filename}"`;
+    res.setHeader('Content-Disposition', contentDisposition);
+    res.setHeader('Content-Type', contentType);
+
+    const fileStream = fs.createReadStream(filePath);
+    
+    fileStream.on('error', (error) => {
+        console.error('Error reading the file:', error);
+        res.status(500).send('Error reading the file');
+    });
+
+    fileStream.pipe(res);
 });
 

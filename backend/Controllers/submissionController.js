@@ -47,19 +47,7 @@ const getAllSubmissions = async (req, res) => {
 
 
 
-const download = async (req, res) => {
-    try {
-        const submission = await submissionService.download(req.params.submission_id);
-        if(!submission) {
-            return res.status(404).json({ status: false, message: 'Submission not found' });
-        }
-        const filepath = path.join(__dirname, './submissionUploads' , submission.submissionFile);
-        res.download(filepath);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ status: false, message: 'An error occurred while downloading the submission' });
-    }
-}
+
 
 
 const getSubmissionsByActivity = async (req, res) => {
@@ -94,4 +82,4 @@ const deleteSubmission = async (req, res) => {
 
 
 
-module.exports = { createSubmission , getAllSubmissions , download , getSubmissionsByActivity , deleteSubmission};
+module.exports = { createSubmission , getAllSubmissions , getSubmissionsByActivity , deleteSubmission};

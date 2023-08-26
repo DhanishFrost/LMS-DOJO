@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Quiz</title>
+    <title>MCQ Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+    <div id="app">
+        <div v-if="quiz && quiz.SingleQuestion && quiz.SingleQuestion.length > 0 ">
+            <h1>{{ quiz.SingleQuestion[currentQuestionIndex].question }}</h1>
+            <div v-for="(option, optionIndex) in quiz.SingleQuestion[currentQuestionIndex].options" :key="optionIndex">
+                <label>
+                    <input type="radio" :value="optionIndex" v-model="selectedOptionIndex">
+                    {{ option }}
+                </label>
+            </div>
+            
+            <button @click="checkAnswer">Submit Answer</button>
+        </div>
+        <div v-else>
+            <h1>Quiz Complete!</h1>
+            <p>Your score: {{ score }}/{{ quiz.SingleQuestion.length}}</p>
+        </div>
+    </div>
+
+    <script src="../app.js"></script>   
+   
+</body>
+</html>

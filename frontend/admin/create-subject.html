@@ -11,26 +11,39 @@
     <title>Create Subject</title>
     
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen bg-white-100">
 <div id="app">
-    <form @submit.prevent="submitCreateSubjectForm">
-        <div>
-            <label for="subjectName">Add Subject Name</label>
-            <input type="text"  id="subjectName" name="subjectName" v-model="subject.subjectName" class="border border-gray-300 rounded-md p-2" >
+    <form @submit.prevent="submitCreateSubjectForm" class="w-full flex justify-center items-center ">
+        <div class=" md:items-center lg:items-center">
+            <div class="md:w-full">
+         <div>
+            <div class="md:w-full">
+            <label for="subjectName" class="block text-gray-500 font-bold  mb-1 md:mb-0 pr-4">Add Subject Name</label>
+            <input type="text"  id="subjectName" name="subjectName" v-model="subject.subjectName" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name">
+            </div>
         </div>
 
         <div>
-            <label for="subjectCode">Add Subject Code</label>
-            <input type="text" id="subjectCode" name="subjectCode"  v-model="subject.subjectCode"   class="border border-gray-300 rounded-md p-2" >
-        </div>
+            <div class="md:w-full">
 
-    
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <label for="subjectCode"  class="block text-gray-500 font-bold  mb-1 md:mb-0 pr-4" >Add Subject Code</label>
+            <input type="text" id="subjectCode" name="subjectCode"  v-model="subject.subjectCode"   class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" >
+            </div>
+        </div>
+        <div class="md:flex md:items-center text-center">
+          <div class="md:w-full">
+         <button type="submit" class="shadow bg-orange-500 hover:bg-orange-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-2">
             Create subject
         </button>
+            </div>
+            </div>  
+         </div>  
 
         
 
+
+        </div>
+        </div>
 
     </form>
 

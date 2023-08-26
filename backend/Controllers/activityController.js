@@ -15,8 +15,7 @@ const createActivity = async (req, res) => {
                 activityDescription: req.body.activityDescription,
                 dueDate: req.body.dueDate,
                 submissiontime: req.body.submissiontime,
-                //activityImage: req.file.filename,
-                //class: req.body.class,
+               
                 forclasses: req.body.forclasses,
                 submissionLink: req.body.submissionLink,
                 downloadLink: req.body.downloadLink,
@@ -24,7 +23,8 @@ const createActivity = async (req, res) => {
                 feedback: req.body.feedback,
                 createdBy: req.body.createdBy,
                 Activity_ID: req.body.Activity_ID,
-
+                ActivityselectedSubjects: req.body.ActivityselectedSubjects,
+                
             };
             const status = await activityService.createActivity(activityData);
             const responseData = {

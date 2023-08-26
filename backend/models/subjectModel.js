@@ -7,11 +7,19 @@ const subjectSchema = new mongoose.Schema({
     subjectName: {
         type: String,
         required: true,
+        unique: true,
     },
 
     subjectCode: {
         type: String,
         required: true,
+        unique: true,
+        validate : {
+            validator : function(v) {
+                return /^[A-Z]{2}[0-9]{4}$/.test(v);
+            },
+            message : props => `${props.value} is not a valid subject code!`
+        }
     },
 
 

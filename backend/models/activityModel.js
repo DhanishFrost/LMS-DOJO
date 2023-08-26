@@ -31,6 +31,12 @@ const activitySchema = new mongoose.Schema({
     },*/
 
 
+    ActivityselectedSubjects: [{
+        type: String,
+      
+      
+    }],
+
     forclasses:[{
         type: String,
     }],

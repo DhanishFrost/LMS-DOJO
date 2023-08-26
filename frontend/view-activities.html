@@ -9,6 +9,31 @@
     <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
+
+
+  <header>
+    <div class="flex border-b border-black h-4/5"> 
+        <div class="flex w-3/5 p-4 items-center">
+            <ul class="text-sm flex-grow ml-12 font-bold "><a href="#">
+                <span class="border-b-4 border-orange-500">Dashboard</span></a>
+            </ul>
+            <ul class="text-sm flex-grow font-bold "><a href="#">Timetable</a></ul>
+            <ul class="text-sm flex-grow font-bold "><a href="../../view-activities.html">My Activities</a></ul>
+            <ul class="text-sm flex-grow font-bold "><a href="#">Event Calendar</a></ul>
+          </div>
+          
+         
+        <div class="w-2/5 p-4 grid justify-items-end">
+            <div class="mr-16 font-bold text-orange-500">
+                Welcome back!
+            </div>
+            <div class="mr-16 font-bold text-3xl">
+            Student Name
+            </div>
+        </div>
+    </div>
+</header>
+
 <body>
 
     
@@ -54,7 +79,7 @@
                         </tr>
                       </tbody>-->
                       <div v-for="activity in activities" :key="activity.id">
-                      <div class="mt-2 max-w-sm w-full lg:max-w-full lg:flex" >
+                     <!--- <div class="mt-2 max-w-sm w-full lg:max-w-full lg:flex" >
                       
                         <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                           <div class="mb-8">
@@ -67,11 +92,35 @@
                               <p class="text-gray-900 leading-none">{{ activity.createdBy }}</p>
                             
                               <a :href="'add-Submission.html?Activity_ID='+  activity.Activity_ID" @click="storeActivityID(activity.Activity_ID)" class="text-red-600"> Click here to submit{{ activity.submissionLink }}</a>
-                              <p class="text-gray-900 leading-none">{{ activity.submissionStatus }}</p>
+                          <p class="text-gray-900 leading-none">{{ activity.submissionStatus }}</p>
                             </div>
                           </div>
                         </div>
+                      </div>-->
+                    
+
+
+                    <div class="max-w-sm w-full lg:max-w-full lg:flex">
+                      <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
                       </div>
+                      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                        <div class="mb-1">
+                         
+                          <div class="text-gray-900 font-bold text-xl mb-2">{{ activity.activityName }}</div>
+                          <p class="text-gray-700 text-base">{{ activity.activityDescription }}</p>
+                              <a :href="'add-Submission.html?Activity_ID='+  activity.Activity_ID" @click="storeActivityID(activity.Activity_ID)" class="text-red-600"> Click here to submit{{ activity.submissionLink }}</a>
+
+                        </div>
+                        <div class="flex items-center">
+                          <div class="text-sm">
+                            <p class="text-gray-900 leading-none">{{ activity.createdBy }}</p>
+                            <p class="text-gray-600">{{activity.dueDate}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                     </div>
 
 

@@ -197,10 +197,16 @@
         <tr v-for="submission in submissions" :key="submission._id">
           <td>{{submission.submissionName}}</td>
           <td>{{submission.submissionFile}}</td>
+          <td>{{submission.studentEmail}}</td>
           <td>        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
             @click="confirmDeleteSubmission(submission._id)">
             Delete
           </button></td>
+
+          <td>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" @click="downloadFile(submission.submissionFile)">Download</button>
+
+          </td>
         </tr>
       </tbody>
 

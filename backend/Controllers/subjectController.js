@@ -13,6 +13,11 @@ const createSubject = async (req, res) => {
         if (status) {
             res.status(200).json({ status: true, message: 'Subject created successfully' });
         } else {
+            if (status.validationErrors) {
+                const errorMessage= "invalid input"
+                res.status(400).json({ status: false, message: 'Validation Errors', errors:errorMessage });
+            }
+            else
             res.status(400).json({ status: false, message: 'Error creating subject' });
         }
 

@@ -26,8 +26,8 @@ module.exports.createActivity = async (activityDetails) => {
             feedback: activityDetails.feedback,
             createdBy: activityDetails.createdBy,
             Activity_ID: activityDetails.Activity_ID,
+            ActivityselectedSubjects: activityDetails.ActivityselectedSubjects
             
-
         });
 
         activity.save()

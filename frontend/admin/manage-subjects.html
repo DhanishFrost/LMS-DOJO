@@ -9,19 +9,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
-    <h1> Manage subjects</h1>
+  
 
-    <div id="app" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div id="app" class="flex flex-col items-center justify-center min-h-screen bg-white">
+        <div class="w-full lg:w-5/6">
+            <div class="bg-white shadow-md rounded my-6">
+    <!--search bar-->
+    <input v-model="searchText" type="text" placeholder="Search subjects..."
+    class="mx-auto text-center border border-gray-300 rounded-md p-2 mb-4 w-64 px-6">
+
+     <!--search bar end-->
 
 
-        <button> <a href="./create-subject.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">Create a subject</a></button>
-        <table>
+        <button> <a href="./create-subject.html" class="bg-orange-500 hover:bg-white hover:text-black hover:border  border-orange-200  font-bold py-1 px-4 rounded">Create a subject</a></button>
+        <table  class="w-full table-auto table-auto">
             <thead>
-                <tr>Subject Name</tr>
-                <tr>Subject Code</tr>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                 <th class="py-3 px-6 text-left">Subject Name</th>
+                 <th class="py-3 px-6 text-left">Subject Code</th>
+                 <th class="py-3 px-6 text-left"> </th>
+                 <th class="py-3 px-6 text-left"> </th>
+                </tr>
+
             </thead>
 
-            <tbody>
+            <!-- before search bar <tbody>
                 <tr v-for="subject in subjects" :key="subject._id"> 
                     <td>{{subject.subjectName}}</td>
                     <td>{{subject.subjectCode}}</td>
@@ -32,6 +44,37 @@
                     @click="confirmDeleteSubject(subject._id)">
                         Delete
                     </button></td>
+                </tr>
+            </tbody>-->
+
+
+            <tbody class="text-gray-600 text-sm font-light">
+                <tr v-for="subject in filteredSubjects" :key="subject._id"  class="border-b border-gray-200 hover:bg-gray-100"> 
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{subject.subjectName}}</td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{subject.subjectCode}}</td>
+
+
+                    <td>
+                        <button class="border border-white bg-white  hover:text-black hover:border-orange-500 text-black font-bold py-1 px-3 rounded flex items-center justify-center space-x-2" 
+                                @click="openEditSubjectPopup(subject)">
+                            <div class="w-4 transform hover:text-orange-500 hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg>
+                            </div>
+                            <span>Edit</span>
+                        </button>
+                    </td>
+                    
+
+                    <td><button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded flex items-center justify-center"
+                    @click="confirmDeleteSubject(subject._id)">
+                    <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </div> Delete</button></td>
                 </tr>
             </tbody>
         </table>
@@ -66,14 +109,15 @@
 
             </form>
 
-              </div>
+            </div>
     
 
 
 
+            </div>
+          </div>
+        </div>
     </div>
-    </div>
-    
     
 <script src="../app.js"></script>
 

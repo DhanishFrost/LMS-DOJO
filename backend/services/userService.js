@@ -96,6 +96,7 @@ module.exports.updateUser = (email, userDetails) => {
         user.class = userDetails.class;
         user.selectedSubjects = userDetails.selectedSubjects;
         user.teacherclasses = userDetails.teacherclasses;
+        
 
         // Checking if the password field is empty
         if (userDetails.password !== undefined && userDetails.password !== "") {
@@ -151,7 +152,26 @@ module.exports.getAllClasses = async (userEmail) => {
 }
 
 
+module.exports.getAllSubjects = async (userEmail) => {
+  try {
+    const user = await User.findOne({email: userEmail});
+    if (!user) {
+      return { success: false, message: 'There is no such user' };
+    }
+    const selectedSubjects = user.selectedSubjects;
 
+    if(!selectedSubjects){
+      return { success: false, message: 'You are not a student' };
+    }
+
+    
+  } catch (error) {
+    console.error(error.message);
+    return { success: false, message: 'Server Error' };
+    
+  }
+
+}
 
 
 

@@ -26,9 +26,8 @@ const adminSidebar = {
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
           <i class="fas fa-home"></i> 
           <span class="text-[15px] ml-4 text-gray-200">
-
-          <a href="./admin-dashboard.html">Dashboard</a></span>  
-          </div>
+         <a href="./admin-dashboard.html">Dashboard</a></span>  
+        </div>
 
           <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white " @click="dropdown()">
           <i class="fas fa-user"></i> 
@@ -42,18 +41,22 @@ const adminSidebar = {
       <div class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-gray-200 flex flex-col hidden" id="submenu">
         <a href="./manage-students.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Students</a>  
         <a href="./manage-teachers.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Teachers</a>  
-        <a href="./manage-admins.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Administrators</a>  
+        <!--<a href="./manage-admins.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Administrators</a>  -->
         <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white">Manage Subjects</a>  
+      </div>
 
-
-        </div>
-
-          <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
-          <i class="fas "></i> 
-          <a href="./manage-subjects.html" class="cursor pointer p-2 hover:bg-gray-700 rounded-md mt-1 hover:text-white text-[15px] ml-4 text-gray-200">Manage Subjects</a>
         
-          </div>
    
+
+       <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
+       <i class="fa-solid fa-list-check"></i>
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-kanban-fill" viewBox="0 0 16 16">
+       <path d="M2.5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-11zm5 2h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm-5 1a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm9-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/>
+       </svg>
+          <span class="text-[15px] ml-4 text-gray-200">
+          <a href="./manage-subjects.html" class="cursor pointer p-2  rounded-md mt-1 hover:text-white">Manage Subjects</a>
+          </span>  
+        </div>
 
 
       
@@ -111,6 +114,11 @@ new Vue({
   el: '#app',
   data() {
     return {
+      quiz: null, // Initialize quiz as null
+      currentQuestionIndex: 0,
+      selectedOptionIndex: null,
+      score: 0,
+      searchText: '',
       showSubmissionsPopup: false,
       TeacherclassOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
       teacherclasses: [],
@@ -125,13 +133,14 @@ new Vue({
       activities: [],
       subjects: [],
       selectedSubjects: [],
+      ActivityselectedSubjects: [],
       Activity_ID: '',
       ActivityID: '',
       currentActivityID: '',
       activitiesPerTeacher: [],
-      activitiesPerClass:[],
+      activitiesPerClass: [],
       currentemail: '',
-      user:'',
+      user: '',
       activity: '',
       timetables: [],
       userName: '',
@@ -145,6 +154,7 @@ new Vue({
       showEditEventPopup: false,
       showEditSubjectPopup: false,
       isFileInputDisabled: false,
+      showCreateSubjectPopup: false,
 
       classOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
       user: {
@@ -166,7 +176,7 @@ new Vue({
         class: '',
         teacherclasses: [],
         selectedSubjects: [],
-      
+
       },
       successMessage: '',
       errors: {
@@ -185,9 +195,11 @@ new Vue({
         createdBy: '',
         Activity_ID: '',
         submissionStatus: '',
+        subject: '',
+        ActivityselectedSubjects: [],
 
       },
-  
+
       event: {
         name: '',
         date: '',
@@ -206,43 +218,51 @@ new Vue({
         image: null,
       },
 
-      editedActivity:{
-        selectedActivityId:'',
+      editedActivity: {
+        selectedActivityId: '',
         activityName: '',
         activityDescription: '',
         dueDate: '',
         submissiontime: '',
-        forclasses: [], 
+        forclasses: [],
         Activity_ID: '',
-      
-      },
-
-      submission:{
-       submissionName: '',
-       submissionFile: null,
-       Activity_ID: '',
-       currentActivityID: '',
 
       },
 
-      editedSubject:{
-        selectedSubjectId:'',
+      submission: {
+        submissionName: '',
+        submissionFile: null,
+        Activity_ID: '',
+        currentActivityID: '',
+
+      },
+
+      editedSubject: {
+        selectedSubjectId: '',
         subjectName: '',
         subjectCode: '',
 
       },
 
-      
 
-      subject:{
+
+      subject: {
         subjectName: '',
         subjectCode: '',
       },
 
       quiz: {
         quizName: '',
-        SingleQuestion: [],
-      }
+        SingleQuestion: [
+          {
+            question: '',
+            options: [],
+            correctAnswer: ''
+          }
+        ]
+      },
+
+
 
     };
   },
@@ -254,6 +274,7 @@ new Vue({
     this.getAllSubjects();
     this.getAllEvents();
     this.getAllClasses();
+    this.getAllSubjects();
     //this.getAllActivities();
     this.getActivitiesPerTeacher();
     //this.getSubmissionsByActivity();
@@ -263,15 +284,36 @@ new Vue({
 
   },
 
-  
+
 
   created() {
     this.loadUserName();
     this.getAllTimetables();
     this.loadClassName();
+    this.getQuiz();
   },
 
   computed: {
+
+    filteredSubjects() {
+      return this.subjects.filter(subject => {
+          const searchTerm = this.searchText.toLowerCase();
+          return subject.subjectName.toLowerCase().includes(searchTerm) ||
+                 subject.subjectCode.toLowerCase().includes(searchTerm);
+      });
+  },
+    quizLength() {
+      if (this.quiz && this.quiz.SingleQuestion && Array.isArray(this.quiz.SingleQuestion)) {
+        return this.quiz.SingleQuestion.length;
+      }
+      return 0;
+    },
+    currentQuestion() {
+      if (this.quiz && this.quiz.SingleQuestion && Array.isArray(this.quiz.SingleQuestion) && this.quizLength > this.currentQuestionIndex) {
+        return this.quiz.SingleQuestion[this.currentQuestionIndex];
+      }
+      return null;
+    },
     isEmailValid() {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailPattern.test(this.user.email);
@@ -305,18 +347,49 @@ new Vue({
 
       return newTimetableData;
     },
-  
+
+
+
   },
- 
+
   watch: {
     'user.role': 'updateClassOptions'
   },
 
   methods: {
-   
 
-     //handleBeforeUnload(e) {
-     //localStorage.removeItem('Activity_ID');
+    async downloadFile(filename) {
+      try {
+        const encodedFilename = encodeURIComponent(filename);
+        const response = await axios.get(`/download?filename=${encodedFilename}`, {
+          responseType: 'blob',
+        });
+    
+        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+    
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+    
+        // Decode the filename before setting it as the download attribute
+        const decodedFilename = decodeURIComponent(filename);
+        downloadLink.download = decodedFilename;
+    
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    
+        URL.revokeObjectURL(downloadLink.href);
+    
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    ,
+
+
+    //handleBeforeUnload(e) {
+    //localStorage.removeItem('Activity_ID');
 
     //},
 
@@ -337,7 +410,7 @@ new Vue({
 
       email = this.email
       localStorage.setItem('Currentemail', email);
-      
+
       // Send the user data to the backend using an HTTP request
       // After successful login
       axios.post('/user/login', userData)
@@ -401,7 +474,7 @@ new Vue({
     },
 
 
-    
+
 
     getStudentUsers() {
       axios.get('/admin/getStudentUsers')
@@ -438,45 +511,76 @@ new Vue({
       this.openCreateUserPopup = true;
     },
 
+
+  
+
     updateClassOptions() {
       if (this.user.role === 'pStudent') {
         this.classOptions = ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C'];
-        this.user.class = this.classOptions[0]; 
+        this.user.class = this.classOptions[0];
       } else if (this.user.role === 'lsStudent') {
         this.classOptions = ['6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C'];
-        this.user.class = this.classOptions[0]; 
+        this.user.class = this.classOptions[0];
       } else if (this.user.role === 'usStudent') {
         this.classOptions = ['11A', '11B', '11C', '12A', '12B', '12C'];
-        this.user.class = this.classOptions[0]; 
+        this.user.class = this.classOptions[0];
       }
     },
 
-//quiz handler
+    //quiz handler
     addQuestion() {
       this.quiz.SingleQuestion.push({
-          question: '',
-          options: '',
-          correctAnswer: ''
+        question: '',
+        options: '',
+        correctAnswer: ''
       });
-  },
+    },
 
 
     CreateQuiz() {
       axios.post('/quiz/createQuiz', this.quiz)
-      .then(response => {
-        alert(response.data.message);
-        this.quiz.quizName = '';
-        this.quiz.SingleQuestion = [];
-        this.quiz.correctAnswer = '';
-        this.quiz.options = [];
-        console.log(response.data.data);
-      })
-      .catch(error => {
-        console.error(error);
-        alert('An error occurred while creating the quiz.');
-      });
+        .then(response => {
+          alert(response.data.message);
+          this.quiz.quizName = '';
+          this.quiz.SingleQuestion = [];
+          this.quiz.correctAnswer = '';
+          this.quiz.options = [];
+          console.log(response.data.data);
+        })
+        .catch(error => {
+          console.error(error);
+          alert('An error occurred while creating the quiz.');
+        });
     },
 
+    getQuiz() {
+      const array = this.quiz.SingleQuestion.length;
+      axios.get('/quiz/getQuiz')
+        .then(response => {
+          console.log('heres the quiz', response.data);
+          this.quiz = response.data;
+          console.log(array)
+        }
+        ).catch(error => {
+          console.error(error);
+        }
+        );
+
+
+    },
+
+
+    checkAnswer() {
+      if (
+        this.selectedOptionIndex !== null &&
+        parseInt(this.selectedOptionIndex) ===
+        parseInt(this.quiz.SingleQuestion[this.currentQuestionIndex].correctAnswer)
+      ) {
+        this.score++;
+      }
+      this.currentQuestionIndex++;
+      this.selectedOptionIndex = null;
+    },
 
 
     submitCreateUserForm() {
@@ -535,7 +639,7 @@ new Vue({
         return [];
       }
     },
-    
+
     submitEditUserForm() {
       const isPasswordEmpty = this.editedUser.password === undefined || this.editedUser.password === "";
 
@@ -597,42 +701,58 @@ new Vue({
       return `${year}-${month}-${day}`;
     },
 
-   
 
 
-      //class handler
 
-      getAllClasses() {
-        const currentemail = localStorage.getItem('Currentemail');
-        console.log(currentemail)
-        axios.get(`/user/getAllClasses/${currentemail}`)
-  
-          .then(response => { 
-            console.log(response.data);
-            this.teacherclasses = response.data.classes.teacherclasses;
-           console.log(this.teacherclasses);
-          }).catch(error => {
-            console.error(error);
-          });
-  
-          
-      },
+    //class handler
 
+    getAllClasses() {
+      const currentemail = localStorage.getItem('Currentemail');
+      console.log(currentemail)
+      axios.get(`/user/getAllClasses/${currentemail}`)
+
+        .then(response => {
+          console.log(response.data);
+          this.teacherclasses = response.data.classes.teacherclasses;
+          console.log(this.teacherclasses);
+        }).catch(error => {
+          console.error(error);
+        });
+
+
+    },
+
+
+    getAllSubjects() {
+      const currentemail = localStorage.getItem('Currentemail');
+      console.log(currentemail)
+      axios.get(`/user/getAllSubjects/${currentemail}`)
+
+        .then(response => {
+          console.log(response.data);
+          this.selectedSubjects = response.data.subjects.selectedSubjects;
+          console.log(this.selectedSubjects);
+        }).catch(error => {
+          console.error(error);
+        });
+
+
+    },
 
     //activity Handler
 
-    
-    
-  submitCreateActivityForm() { 
-       const currentemail = localStorage.getItem('Currentemail');
 
-    // Set the currentemail to the activity object
-       this.activity.createdBy = currentemail;
-       console.log(currentemail);
+
+    submitCreateActivityForm() {
+      const currentemail = localStorage.getItem('Currentemail');
+
+      // Set the currentemail to the activity object
+      this.activity.createdBy = currentemail;
+      console.log(currentemail);
       axios.post('/activity/createActivity', this.activity)
         .then(response => {
           alert(response.data.message);
-          console.log("Created Activity Data:", response.data.data); 
+          console.log("Created Activity Data:", response.data.data);
 
           this.activity.activityName = '';
           this.activity.activityDescription = '';
@@ -645,134 +765,98 @@ new Vue({
           this.activity.feedback = '';
           this.activity.createdBy = currentemail;
           this.activity.Activity_ID = '';
-          
+          this.activity.ActivityselectedSubjects = [];
+
 
         })
-        
+
         .catch(error => {
           console.error(error);
           alert('An error occurred while creating the activity.');
         });
 
-     },
+    },
 
 
 
 
-      
-    getAllActivities(){
+
+    getAllActivities() {
       axios.get('/activity/getAllactivities')
-      .then(response => {
-        console.log(response.data);
-        this.activities = response.data.data;
-      }
-      ).catch(error => {
-        console.error(error);
-      }
-      );
+        .then(response => {
+          console.log(response.data);
+          this.activities = response.data.data;
+        }
+        ).catch(error => {
+          console.error(error);
+        }
+        );
 
     },
 
-    getActivitiesPerTeacher(){
+    getActivitiesPerTeacher() {
       const currentemail = localStorage.getItem('Currentemail');
       console.log(currentemail)
       axios.get(`/activity/getActivitiesPerTeacher/${currentemail}`)
-      .then(response => {
-        console.log(response.data);
-        this.activities = response.data.data;
-      }
-      ).catch(error => {
-        console.error(error);
-      }
-      );
+        .then(response => {
+          console.log(response.data);
+          this.activities = response.data.data;
+        }
+        ).catch(error => {
+          console.error(error);
+        }
+        );
 
     },
 
-   
-  
 
-   
 
-    
-    getActivitiesPerClass(){
-      
-      
+
+
+
+
+    getActivitiesPerClass() {
+
+
       const studentclass = localStorage.getItem('studentClass');
       console.log(studentclass);
-     axios.get(`/activity/getActivitiesPerClass/${studentclass}`)
-      .then(response => {
-        console.log(response.data);
-        this.activities = response.data.data;
-      
-      }
-      ).catch(error => {
-        console.error(error);
-      }
-      );
+      axios.get(`/activity/getActivitiesPerClass/${studentclass}`)
+        .then(response => {
+          console.log(response.data);
+          this.activities = response.data.data;
+
+        }
+        ).catch(error => {
+          console.error(error);
+        }
+        );
 
     },
 
 
     //submission handler
-    storeActivityID(Activity_ID){
+    storeActivityID(Activity_ID) {
       currentActivityID = localStorage.setItem('Activity_ID', Activity_ID);
       console.log(currentActivityID);
-      
+
     },
 
-    submitCreateSubmissionForm(){
+    submitCreateSubmissionForm() {
 
       const currentemail = localStorage.getItem('Currentemail');
       const currentActivityID = localStorage.getItem('Activity_ID');
       const formData = new FormData();
-      formData.append("submissionName" , this.submission.submissionName)
-      formData.append("submissionFile" , this.submissionFile);
-      formData.append("submissionFile" , this.submissionFile.name);
+      formData.append("submissionName", this.submission.submissionName)
+      formData.append("submissionFile", this.submissionFile);
+      formData.append("submissionFile", this.submissionFile.name);
       formData.append("Activity_ID", currentActivityID); // Use the stored Activity_ID
       formData.append("studentEmail", currentemail); // Use the stored student email
       if (this.submissionFile != null) {
         this.submissionStatus = 'Submitted';
-        
+
       }
-      
-     axios.post(`/uploads`, formData)
-       .then(response => {
-        alert(response.data.message);
-        console.log(response.data.data);
-        console.log(this.submissionFile.name);
-        console.log(this.submission.Activity_ID);
-        console.log(currentActivityID);
-        console.log(currentemail);
-        console.log(this.submissionStatus);
-        localStorage.removeItem('Activity_ID');
-         this.isFileInputDisabled = true;
-        
-      }
-      ).catch(error => {
-        console.error(error);
-        alert('An error occurred while creating lala the submission.');
-      });
-    },
 
-
-/*
-
-
-      submitCreateSubmissionForm(){
-
-        const currentemail = localStorage.getItem('Currentemail');
-        const currentActivityID = localStorage.getItem('Activity_ID');
-        const formData = new FormData();
-        formData.append("submissionName" , this.submission.submissionName)
-        formData.append("submissionFile" , this.submissionFile);
-        formData.append("submissionFile" , this.submissionFile.name);
-        formData.append("Activity_ID", currentActivityID); // Use the stored Activity_ID
-        formData.append("studentEmail", currentemail); // Use the stored student email
-        
-        
-        
-       axios.post(`/uploads`, formData)
-  
+      axios.post(`/uploads`, formData)
         .then(response => {
           alert(response.data.message);
           console.log(response.data.data);
@@ -780,31 +864,68 @@ new Vue({
           console.log(this.submission.Activity_ID);
           console.log(currentActivityID);
           console.log(currentemail);
+          console.log(this.submissionStatus);
           localStorage.removeItem('Activity_ID');
+          this.isFileInputDisabled = true;
 
-          axios.post('/activity/updateSubmissionStatus',{
-            Activity_ID: currentActivityID,
-            studentEmail: currentemail,
-            submissionStatus: 'Submitted'
-          } ). then(statusResponse => {
-            console.log(statusResponse.data);
-           
-          }
-          ).catch(error => {
-            console.error(error);
-            alert('An error occurred while updating the submission status.');
-          }
-          );
-          
-  
         }
         ).catch(error => {
           console.error(error);
           alert('An error occurred while creating lala the submission.');
         });
-  
-  
-      },*/
+    },
+
+
+    /*
+    
+    
+          submitCreateSubmissionForm(){
+    
+            const currentemail = localStorage.getItem('Currentemail');
+            const currentActivityID = localStorage.getItem('Activity_ID');
+            const formData = new FormData();
+            formData.append("submissionName" , this.submission.submissionName)
+            formData.append("submissionFile" , this.submissionFile);
+            formData.append("submissionFile" , this.submissionFile.name);
+            formData.append("Activity_ID", currentActivityID); // Use the stored Activity_ID
+            formData.append("studentEmail", currentemail); // Use the stored student email
+            
+            
+            
+           axios.post(`/uploads`, formData)
+      
+            .then(response => {
+              alert(response.data.message);
+              console.log(response.data.data);
+              console.log(this.submissionFile.name);
+              console.log(this.submission.Activity_ID);
+              console.log(currentActivityID);
+              console.log(currentemail);
+              localStorage.removeItem('Activity_ID');
+    
+              axios.post('/activity/updateSubmissionStatus',{
+                Activity_ID: currentActivityID,
+                studentEmail: currentemail,
+                submissionStatus: 'Submitted'
+              } ). then(statusResponse => {
+                console.log(statusResponse.data);
+               
+              }
+              ).catch(error => {
+                console.error(error);
+                alert('An error occurred while updating the submission status.');
+              }
+              );
+              
+      
+            }
+            ).catch(error => {
+              console.error(error);
+              alert('An error occurred while creating lala the submission.');
+            });
+      
+      
+          },*/
 
 
     /*window(){
@@ -843,7 +964,7 @@ new Vue({
       axios.put(`/activity/updateActivity/${this.editedActivity.selectedActivityId}`, this.editedActivity)
         .then((response) => {
           this.showEditActivityPopup = false;
-          this.getActivitiesPerTeacher();  
+          this.getActivitiesPerTeacher();
           console.log(response.data);
         })
         .catch((error) => {
@@ -869,120 +990,119 @@ new Vue({
         .then(response => {
           console.log(response.data);
           this.getActivitiesPerTeacher();
-          
-          
-          
+
+
+
         })
         .catch(error => {
           console.error(error);
         });
     },
 
- 
 
-//submission handler
 
-confirmDeleteSubmission(submissionId) {
-  if (confirm('Are you sure you want to delete this submission?')) {
-    this.deleteSubmission(submissionId);
-  }
-},
+    //submission handler
 
-deleteSubmission(submissionId) {
-  axios.delete(`/uploads/deleteSubmission/${submissionId}`)
-    .then(response => {
-      console.log(response.data);
-      this.showSubmissionsPopup = false;
-     
-      
-     
-    })
-    .catch(error => {
-      console.error(error);
-    });
-},
+    confirmDeleteSubmission(submissionId) {
+      if (confirm('Are you sure you want to delete this submission?')) {
+        this.deleteSubmission(submissionId);
+      }
+    },
+
+    deleteSubmission(submissionId) {
+      axios.delete(`/uploads/deleteSubmission/${submissionId}`)
+        .then(response => {
+          console.log(response.data);
+          this.showSubmissionsPopup = false;
 
 
 
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
 
-    viewSubmissionsForActivity (Activity_ID) {
+
+
+
+    viewSubmissionsForActivity(Activity_ID) {
       this.showSubmissionsPopup = true;
       this.getSubmissionsByActivity(Activity_ID);
 
     },
 
 
-    getSubmissionsByActivity(Activity_ID){
+    getSubmissionsByActivity(Activity_ID) {
       axios.get(`/uploads/getSubmissionsByActivity/${Activity_ID}`)
-      .then(response => {
-        console.log(response.data);
-        this.submissions = response.data.data;
-      }
-      ).catch(error => {
-        console.error(error);
-      }
-      );
+        .then(response => {
+          console.log(response.data);
+          this.submissions = response.data.data;
+        }
+        ).catch(error => {
+          console.error(error);
+        }
+        );
     },
 
 
 
 
 
-    onFileChangeCreateSubmission(event){
+    onFileChangeCreateSubmission(event) {
       console.log(event.target.files[0]);
       this.submissionFile = event.target.files[0];
       console.log('Selected file:', this.submissionFile); // Log the selected file to verify
 
-      
-      },
-    
 
-    getAllSubmissions(){
+    },
+
+
+    getAllSubmissions() {
       axios.get('/uploads/getAllSubmissions')
-      .then(response => {
-        console.log(response.data);
-        this.submissions = response.data.data;
-      }
-      ).catch(error => {
-        console.error(error);
-       } );
+        .then(response => {
+          console.log(response.data);
+          this.submissions = response.data.data;
+        }
+        ).catch(error => {
+          console.error(error);
+        });
 
-      },
-
-
-      //subject handler
+    },
 
 
-         
+    //subject handler
+    
     submitCreateSubjectForm() {
       axios.post('/subject/createSubject', this.subject)
-       
-         .then(response => {
-           alert(response.data.message);
- 
-         })
-         .catch(error => {
-           console.error(error);
-           alert('An error occurred while creating the subject.');
-         });
-       
-     },
 
-     getAllSubjects(){
+        .then(response => {
+          alert(response.data.message);
+         
+        
+        })
+        .catch(error => {
+          console.error(error);
+          alert('An error occurred while creating the subject.');
+        });
+
+    },
+
+    getAllSubjects() {
       axios.get('/subject/getAllSubjects')
-      .then(response => {
-        console.log(response.data);
-        this.subjects = response.data.data;
-      }
-      ).catch(error => {
-        console.error(error);
-      }
-      );
-     },
+        .then(response => {
+          console.log(response.data);
+          this.subjects = response.data.data;
+        }
+        ).catch(error => {
+          console.error(error);
+        }
+        );
+    },
 
 
 
-     openEditSubjectPopup(subject) {
+    openEditSubjectPopup(subject) {
       this.editedSubject.selectedSubjectId = subject._id;
       this.editedSubject.subjectName = subject.subjectName;
       this.editedSubject.subjectCode = subject.subjectCode;
@@ -1006,17 +1126,17 @@ deleteSubmission(submissionId) {
         .catch(error => {
           console.error('Error updating subject:', error);
         });
-      },
+    },
 
 
-      confirmDeleteSubject(subjectId) {
-        if (confirm('Are you sure you want to delete this subject?')) {
-          this.deleteSubject(subjectId);
-        }
+    confirmDeleteSubject(subjectId) {
+      if (confirm('Are you sure you want to delete this subject?')) {
+        this.deleteSubject(subjectId);
+      }
 
-      },
+    },
 
-     
+
     deleteSubject(subjectId) {
       axios.delete(`/subject/deleteSubject/${subjectId}`)
 
@@ -1025,7 +1145,7 @@ deleteSubmission(submissionId) {
           this.getAllSubjects();
         })
         .catch(error => {
-          console.error(error); 
+          console.error(error);
         });
     },
 
@@ -1034,7 +1154,7 @@ deleteSubmission(submissionId) {
 
 
 
-//event handler
+    //event handler
 
     submitCreateEventForm() {
       const formData = new FormData();
@@ -1057,7 +1177,7 @@ deleteSubmission(submissionId) {
         });
     },
 
-   
+
 
 
 
@@ -1122,7 +1242,7 @@ deleteSubmission(submissionId) {
       formData.append('eventLocation', this.editedEvent.location);
       formData.append('eventImage', this.editedEvent.image); // Make sure this contains the selected file
 
-     
+
       axios.put(`/event/updateEvent/${this.editedEvent.selectedEventId}`, formData)
         .then((response) => {
           this.showEditEventPopup = false;
@@ -1168,7 +1288,7 @@ deleteSubmission(submissionId) {
     },
 
 
-     
+
 
     getAllTimetables() {
       const studentClass = localStorage.getItem('studentClass');
@@ -1183,7 +1303,7 @@ deleteSubmission(submissionId) {
         });
     },
 
-   
+
 
     handleLogout() {
       localStorage.removeItem('token');
@@ -1193,7 +1313,7 @@ deleteSubmission(submissionId) {
 
       window.location.href = '/';
     }
-}
+  }
 });
 
 
