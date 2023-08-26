@@ -20,7 +20,7 @@ const SubmissionStorage = multer.diskStorage({
       cb(null , path.join( "./submissionUploads"))
   },
   filename: (req, file, cb) => {
-      cb(null , `${file.originalname}`)
+      cb(null , file.originalname)
   }
 
 });

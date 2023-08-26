@@ -182,6 +182,7 @@ new Vue({
         createdBy: '',
         Activity_ID: '',
         submissionStatus: '',
+        ActivityselectedSubjects: []
 
       },
 
@@ -314,6 +315,9 @@ new Vue({
       });
     },
 
+
+    
+
   },
 
   watch: {
@@ -321,6 +325,8 @@ new Vue({
   },
 
   methods: {
+
+
 
     async downloadFile(filename) {
       try {
@@ -348,6 +354,8 @@ new Vue({
         console.error(error);
       }
     },
+
+
 
 
     //handleBeforeUnload(e) {
