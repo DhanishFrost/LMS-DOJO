@@ -26,20 +26,82 @@
                 <div class="text-right">
                     <p class="text-lg font-bold mb-2 text-[#FF823C] max-md:text-sm">WELCOME BACK!</p>
                     <p><span id="userName" class="font-semibold text-2xl max-md:text-xl">{{ userName }}</span></p>
+                    
+  
                 </div>
             </div>
+
+
+               
+         
+          
+              <ul  v-for="teacherclass in teacherclasses" :key="teacherclass">
+                <div class="max-w-sm rounded overflow-hidden shadow-lg">
+                  <div class="px-6 py-4">
+
+                <li  class="font-bold text-xl mb-2">{{ teacherclass }}</li>
+                </div>
+                </div>
+              </ul>
+            </div>
+        
+
+
+
+
+            <div class="max-w-sm rounded overflow-hidden shadow-lg">
+              <div class="px-6 py-4">
+                <a href="./create-activity.html" class="font-bold text-xl mb-2">Create an activity</a>
+              </div>
+             <!---<div class="px-6 py-4">
+                <a href="./manage-activities.html" class="font-bold text-xl mb-2">view all activities</a>
+              </div>-->
+
+              <div class="px-6 py-4">
+                <a href="./manage-activity-per-teacher.html" class="font-bold text-xl mb-2">view just my activities activities</a>
+              </div>
+
+              <div class="px-6 py-4">
+                <a href="./manage-submissions.html" class="font-bold text-xl mb-2">Manage submissions</a>
+              </div>
+              <div class="px-6 pt-4 pb-2">
+              </div>
+
+
+              <div class="px-6 py-4">
+                <a href="./create-pop-quiz.html" class="font-bold text-xl mb-2">Create Quizz</a>
+              </div>
+              <div class="px-6 pt-4 pb-2">
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
+              </div>
+            </div>
+
+
+    
+
+
+
+
+
+
+
+
+
         </main>
   </div>
+
+
 
 </div>
  
 <script src="../Sidebar.js"></script>
   <script>
     new Vue({
-      el: '#sidepanel',
+      el: '#sidebar',
     });
   </script>
 <script src="../app.js"></script>
+<script src="../TeacherClasses.js"></script>
 
 
 </body>

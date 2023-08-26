@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+
+    <div id="app">
+
+        <div v-for="submission in submissions" :key="submission.id">
+            <div class="mt-2 max-w-sm w-full lg:max-w-full lg:flex" >
+                      
+                <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                  <div class="mb-8">
+                    
+                    <div class="text-gray-900 font-bold text-xl mb-2">{{ submission.submissionName }}</div>
+                    <p class="text-gray-700 text-base">{{ submission.submissionFile }}</p>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="text-sm">
+                      <p class="text-gray-900 leading-none">{{ submission.Activity_ID }}</p>
+                    
+                    </div>
+                  </div>
+
+                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                  @click="confirmDeleteSubmission(submission._id)">
+                  Delete
+                </button>
+                </div>
+              </div>
+
+        </div>
+    </div>
+  <script src="../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+
+    
+
+    <div id="app">
+
+        <div class="overflow-x-auto">
+               <!---<table class="w-full border-collapse table-auto bg-white">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Activity Name</th>
+                        <th class="px-4 py-2">Activity Date</th>
+                        <th class="px-4 py-2">Activity due date</th>
+                        <th class="px-4 py-2">Activity Description</th>
+                        <th class="px-4 py-2">Activity submission link</th>
+                        <th class="px-4 py-2">Activity download link</th>
+                        <th class="px-4 py-2">Activity grade</th>
+                        <th class="px-4 py-2">Feedback</th>
+                        <th>createdBy</th>
+              
+                    </tr>
+                </thead>
+
+               
+                <tbody>
+                        <tr v-for="activity in activities" :key="activity.id">
+                         // <td class="border px-4 py-2">{{ activity.activityName }}</td>
+                          <td class="border px-4 py-2">{{ activity.dueDate }}</td>
+                          <td class="border px-4 py-2">{{ activity.submissiontime }}</td>
+                         //<td class="border px-4 py-2">{{ activity.activityDescription }}</td>
+                         //<a  href="add-Submission.html"  class="border px-4 py-2">{{ activity.submissionLink }}</a>
+                         // <td class="border px-4 py-2">{{ activity.downloadLink }}</td>
+                         // <td class="border px-4 py-2">{{ activity.submissionGrade }}</td>
+                        //  <td class="border px-4 py-2">{{ activity.feedback }}</td>
+                         // <td class="border px-4 py-2">{{ activity.createdBy }}</td>
+                          <td class="border px-4 py-2">
+                            <ul>
+                              <li v-for="forclass in activities.forclasses" :key="forclass">{{forclass}}</li>
+                            </ul>
+                          </td>
+                
+                
+                        </tr>
+                      </tbody>-->
+                      <div v-for="activity in activities" :key="activity.id">
+                      <div class="mt-2 max-w-sm w-full lg:max-w-full lg:flex" >
+                      
+                        <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                          <div class="mb-8">
+                            
+                            <div class="text-gray-900 font-bold text-xl mb-2">{{ activity.activityName }}</div>
+                            <p class="text-gray-700 text-base">{{ activity.activityDescription }}</p>
+                          </div>
+                          <div class="flex items-center">
+                            <div class="text-sm">
+                              <p class="text-gray-900 leading-none">{{ activity.createdBy }}</p>
+                            
+                              <a :href="'add-Submission.html?Activity_ID='+  activity.Activity_ID" @click="storeActivityID(activity.Activity_ID)" class="text-red-600"> Click here to submit{{ activity.submissionLink }}</a>
+                              <p class="text-gray-900 leading-none">{{ activity.submissionStatus }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+        </div>        
+    </div>
+ 
+    
+
+
+
+    <script src="../../app.js"></script>
+</body>
+</html>

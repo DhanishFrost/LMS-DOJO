@@ -1,5 +1,18 @@
 const mongoose = require('mongoose');
 
+/*
+const Class = new mongoose.Schema({
+    classname: {
+        required: true,
+        type: String,
+    },
+
+});*/
+
+
+
+
+
 const userSchema = new mongoose.Schema({
 
     id: mongoose.Schema.Types.ObjectId,
@@ -39,7 +52,29 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
 
+
+    /* teacherclasses: {
+        
+        type : [Class],
+    
+    }*/
+
+
+    teacherclasses : [{
+       type: String
+    }],
+
+
+    selectedSubjects : [{
+        type: String
+    }]
+    
+   
+
+
+
 });
 
-const userModel = mongoose.model('User', userSchema);
-module.exports = userModel;
+//const Class = mongoose.model('Class', ClassSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;

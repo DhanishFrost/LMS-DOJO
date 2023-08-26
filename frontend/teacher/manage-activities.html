@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="../styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class="flex">
+         
+            <div class="main-content flex-1 container mx-auto p-8 pl-20 overflow-y-auto">
+    <h2>Activities List</h2>
+    <table class="table-auto w-full">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Activity Name</th>
+          <th class="px-4 py-2">Activity Date</th>
+          <th class="px-4 py-2">Activity due date</th>
+          <th class="px-4 py-2">Activity Description</th>
+          <th class="px-4 py-2">Activity submission link</th>
+          <th class="px-4 py-2">Activity download link</th>
+          <th class="px-4 py-2">Activity grade</th>
+
+       
+        </tr>
+      </thead> 
+
+      <tbody>
+        <tr v-for="activity in activities" :key="activity.id">
+          <td class="border px-4 py-2">{{ activity.activityName }}</td>
+          <td class="border px-4 py-2">{{ activity.dueDate }}</td>
+          <td class="border px-4 py-2">{{ activity.submissiontime }}</td>
+          <td class="border px-4 py-2">{{ activity.activityDescription }}</td>
+          <td class="border px-4 py-2">{{ activity.submissionlink }}</td>
+          <td class="border px-4 py-2">{{ activity.downloadLink }}</td>
+          <td class="border px-4 py-2">{{ activity.submissionGrade }}</td>
+          <td class="border px-4 py-2">{{ activity.feedback }}</td>
+          <td class="border px-4 py-2">
+            <ul>
+              <li v-for="forclass in activities.forclasses" :key="forclass">{{forclass}}</li>
+            </ul>
+          </td>
+
+
+        </tr>
+      </tbody>
+    
+    </table>
+    </div>
+    </div>
+    </div>
+    <script src="../app.js"></script>
+
+</body>
+</html>

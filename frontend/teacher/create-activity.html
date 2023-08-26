@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="../styles.css">
+    <title>Create Activity</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="flex">
+         
+            <div class="main-content flex-1 container mx-auto p-8 pl-20 overflow-y-auto">
+                <h1 class="text-3xl font-bold mb-6">Create Activity</h1>
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h2 class="text-xl font-bold mb-4">Create Activity</h2>
+                    <form @submit.prevent="submitCreateActivityForm">
+                        <div class="flex flex-col mb-4">
+                            <label for="activityName" class="text-gray-700">Activity Name:</label>
+                            <input type="text" v-model="activity.activityName" id="activityName" name="activityName" class="border border-gray-300 rounded-md p-2" required>
+                        </div>
+                          
+
+                        
+                   <div class="flex flex-col mb-4">
+                            <label for="dueDate" class="text-gray-700">Add a submission data</label>
+                            <input v-model="activity.dueDate" type="date" id="dueDate" name="dueDate"
+                                class="border border-gray-300 rounded-md p-2">
+                        </div>
+                        <div class="flex flex-col mb-4">
+                            <label for="submissiontime" class="text-gray-700">Add a submission time</label>
+                            <input v-model="activity.submissiontime" type="time" id="submissiontime" name="submissiontime"
+                                class="border border-gray-300 rounded-md p-2" >
+                        </div>
+                        <div class="flex flex-col mb-4">
+                            <label for="activityDescription" class="text-gray-700">Activity Description:</label>
+                            <textarea v-model="activity.activityDescription" id="activityDescription" name="activityDescription" rows="4"
+                                class="border border-gray-300 rounded-md p-2" required></textarea>
+                        </div>
+                      
+                        <!--<div class="flex flex-col mb-4">
+                            <label for="activityImage" class="text-gray-700">Activity Image:</label>
+                            <input type="file" id="activityImage" name="activityImage"  v-model="activity.activityImage" 
+                                class="border border-gray-300 rounded-md p-2" required>
+                        </div>-->
+
+
+                    <div class="mt-4">
+                            <label for="forclasses">Classes:</label>
+                            <div class="flex flex-col scrollable-list" id="forclasses" name="forclasses">
+                                <label v-for="TclassOption in TeacherclassOptions" :key="TclassOption">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"
+                                           :value="TclassOption" v-model="activity.forclasses">
+                                    <span class="ml-2 text-gray-700">{{ TclassOption }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                          
+                        <div class="mt-4">
+                            <label for="">Selected classes</label>
+                            <ul class="flex flex-col scrollable-list" id="forclasses" name="forclasses" >
+                                <li v-for="forclass in activity.forclasses" :key="forclass">
+                                    <span>{{ forclass }}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!--<div class="flex flex-col mb-4">
+                            <label for="forclasses" class="text-gray-700">For Class:</label>
+                            <input v-model="activity.forclasses" type="text" id="forclasses" name="forclasses"
+                                class="border border-gray-300 rounded-md p-2" required>
+                        </div>-->
+
+                        <div class="flex flex-col mb-4">
+                            <label for="submissionLink" class="text-gray-700">Submission Link</label>
+                            <input type="text" id="submissionLink" name="submissionLink" v-model="activity.submissionLink"
+                                class="border border-gray-300 rounded-md p-2" hidden>
+                        </div>
+
+
+                        <div class="flex flex-col mb-4">
+                            <label for="downloadLink" class="text-gray-700">Download Link</label>
+                            <input type="text" id="downloadLink" name="downloadLink" v-model="activity.downloadLink"
+                                class="border border-gray-300 rounded-md p-2" hidden>
+                        </div>
+
+                        <div class="flex flex-col mb-4">
+                            <label for="submissionGrade" class="text-gray-700">Submission Grade</label>
+                            <input type="text" id="submissionGrade" name="submissionGrade" v-model="activity.submissionGrade"
+                                class="border border-gray-300 rounded-md p-2" hidden>
+                        </div>
+
+
+                        <div class="flex flex-col mb-4">
+                            <label for="feedback" class="text-gray-700">feedback</label>
+                            <input type="text" id="feedback" name="feedback" v-model="activity.feedback"
+                                class="border border-gray-300 rounded-md p-2" hidden>
+                        </div>
+
+                        <div class="flex flex-col mb-4">
+                            <label for="createdBy" class="text-gray-700">Created by</label>
+                            <input type="text" id="createdBy" name="createdBy" v-model="activity.createdBy"
+                                class="border border-gray-300 rounded-md p-2" disabled hidden>
+                        </div>
+
+                        <div class="flex flex-col mb-4">
+                            <label for="Activity_ID" class="text-gray-700">Activity ID</label>
+                            <input type="text" id="Activity_ID" name="Activity_ID" v-model="activity.Activity_ID"
+                                class="border border-gray-300 rounded-md p-2" >
+                        </div>
+                    
+                    
+
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Create Activity
+                        </button>
+
+                    </form>
+
+</div></div></div></div>
+
+<script src="../app.js"></script>
+
+ </body>
+</html>

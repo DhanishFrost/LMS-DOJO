@@ -9,6 +9,13 @@ const multer = require('multer');
 const path = require('path');
 const cron = require('node-cron');
 const eventService = require('./services/eventService');
+const bodyParser = require('body-parser');
+const ActviityService = require('./services/ActivityService');
+const { updateSubmissionStatus } = require('./services/ActivityService');
+var readlineSync = require('readline-sync');
+//const submissionService = require('./services/submissionService');
+
+
 
 // Set up multer
 const storage = multer.diskStorage({
@@ -32,7 +39,14 @@ cron.schedule('0 0 * * *', async () => {
       console.error('Error updating event statuses:', error);
     }
   });
+
+
         
+  cron.schedule('19 9 * * *', async () => {
+    console.log('Running submission status update task...');
+    await updateSubmissionStatus();
+    console.log('Submission status update task completed.');
+});
 
 
 const app = express();
@@ -42,7 +56,8 @@ app.use(express.json());
 app.use(express.static('../frontend'));
 app.use('/frontend/assets/images', express.static(path.join(__dirname, '../frontend/assets/images')));
 app.use(router);
-
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(bodyParser.json()); // Parse JSON bodies
 // Connection URL
 const url = process.env.MONGODB_URI;
 
@@ -62,4 +77,30 @@ app.listen(PORT, () => {
 });
 
 
+
+const SubmissionStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null , path.join( "./submissionUploads"))
+    },
+    filename: (req, file, cb) => {
+        cb(null , file.originalname)
+    }
+
+});
+
+const SubmissionUpload = multer({ storage : SubmissionStorage ,
+    limits: {
+        fileSize: 2 * 1024 * 1024 * 1024
+       },
+})
+
+app.post('/uploads' , SubmissionUpload.single('submissionFile') , (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
+
+
+    return res.send(req.file);
+    
+
+});
 

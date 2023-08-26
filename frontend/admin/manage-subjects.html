@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+    <h1> Manage subjects</h1>
+
+    <div id="app" class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+
+
+        <button> <a href="./create-subject.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">Create a subject</a></button>
+        <table>
+            <thead>
+                <tr>Subject Name</tr>
+                <tr>Subject Code</tr>
+            </thead>
+
+            <tbody>
+                <tr v-for="subject in subjects" :key="subject._id"> 
+                    <td>{{subject.subjectName}}</td>
+                    <td>{{subject.subjectCode}}</td>
+                    <td><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" 
+                    @click="openEditSubjectPopup(subject)"> Edit
+                    </button></td>
+                    <td><button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                    @click="confirmDeleteSubject(subject._id)">
+                        Delete
+                    </button></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div v-if="showEditSubjectPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div ref="popupContainer" class="bg-white max-w-lg mx-auto rounded shadow-lg p-6">
+              <div class="popup-content">
+                <h2>Edit subject</h2>
+                <form action="" @submit.prevent="submitEditSubjectForm">
+                    <div class="flex flex-col mb-4">
+                        <label for="editsubjectName" class="text-gray-700">Activity Name:</label>
+                        <input v-model="editedSubject.subjectName" type="text" id="editsubjectName" name="editsubjectName"
+                          class="border border-gray-300 rounded-md p-2">
+                      </div>
+
+                      <div class="flex flex-col mb-4">
+                        <label for="editsubjectCode" class="text-gray-700">Activity Code:</label>
+                        <input v-model="editedSubject.subjectCode" type="text" id="editsubjectCode" name="editsubjectCode"
+                          class="border border-gray-300 rounded-md p-2">
+                      </div>
+
+
+                      
+            <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2"
+            @click="showEditSubjectPopup = false">Cancel
+            </button>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save
+              Changes
+            </button>
+            </div>
+
+            </form>
+
+              </div>
+    
+
+
+
+    </div>
+    </div>
+    
+    
+<script src="../app.js"></script>
+
+ 
+</body>
+</html>
