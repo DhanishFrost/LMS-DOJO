@@ -417,22 +417,27 @@ new Vue({
     },
 
     deleteUser(email) {
-      axios.delete(`/admin/deleteUser/${email}`)
-        .then(response => {
-          console.log(response.data);
-          // Update the user list based on role
-          if (this.adminUsers.find(user => user.email === email)) {
-            this.adminUsers = this.adminUsers.filter(user => user.email !== email);
-          } else if (this.teacherUsers.find(user => user.email === email)) {
-            this.teacherUsers = this.teacherUsers.filter(user => user.email !== email);
-          } else if (this.studentUsers.find(user => user.email === email)) {
-            this.studentUsers = this.studentUsers.filter(user => user.email !== email);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      const confirmed = window.confirm(`Are you sure you want to delete the user with email ${email}?`);
+    
+      if (confirmed) {
+        axios.delete(`/admin/deleteUser/${email}`)
+          .then(response => {
+            console.log(response.data);
+            // Update the user list based on role
+            if (this.adminUsers.find(user => user.email === email)) {
+              this.adminUsers = this.adminUsers.filter(user => user.email !== email);
+            } else if (this.teacherUsers.find(user => user.email === email)) {
+              this.teacherUsers = this.teacherUsers.filter(user => user.email !== email);
+            } else if (this.studentUsers.find(user => user.email === email)) {
+              this.studentUsers = this.studentUsers.filter(user => user.email !== email);
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
     },
+    
 
 
 
