@@ -19,91 +19,53 @@
 
   <div id="app">
 
+    <aside id="sidepanel" class="w-64 bg-black text-white max-md:w-0">
+      <sidebar></sidebar>
+    </aside>
+
     <div class="overflow-x-auto">
-      <!---  <table class="w-full border-collapse table-auto bg-white">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">Activity Name</th>
-                        <th class="px-4 py-2">Activity Date</th>
-                        <th class="px-4 py-2">Activity due date</th>
-                        <th class="px-4 py-2">Activity Description</th>
-                        <th class="px-4 py-2">Activity submission link</th>
-                        <th class="px-4 py-2">Activity download link</th>
-                        <th class="px-4 py-2">Activity grade</th>
-                        <th class="px-4 py-2">Feedback</th>
-                        <th class="px-4 py-2">Activity_ID</th>
-                        <th>createdBy</th>
-              
-                    </tr>
-                </thead>-->
 
-      <!--- <tbody>
-                    <tbody>
-                        <tr v-for="activity in activities" :key="activity.id">
-                          <td class="border px-4 py-2">{{ activity.activityName }}</td>
-                          <td class="border px-4 py-2">{{ activity.dueDate }}</td>
-                          <td class="border px-4 py-2">{{ activity.submissiontime }}</td>
-                          <td class="border px-4 py-2">{{ activity.activityDescription }}</td>
-                          <td class="border px-4 py-2">{{ activity.submissionlink }}</td>
-                          <td class="border px-4 py-2">{{ activity.downloadLink }}</td>
-                          <td class="border px-4 py-2">{{ activity.submissionGrade }}</td>
-                          <td class="border px-4 py-2">{{ activity.feedback }}</td>
-                          <td class="border px-4 py-2">{{ activity.Activity_ID }}</td>
-                            <td class="border px-4 py-2">{{ activity.createdBy }}</td>
 
-                          <td class="border px-4 py-2">
-                            <ul>
-                              <li v-for="forclass in activities.forclasses" :key="forclass">{{forclass}}</li>
-                            </ul>
-                          </td>
-                
-                
-                        </tr>
-                      </tbody>
-                </tbody>-->
+ 
 
-      <div class="max-w-lg w-full lg:max-w-full sm:flex " v-for="activity in activities" :key="activity.id">
+      <div class="max-w-lg w-2/3 lg:ml-96 lg:max-w-full mt-4 sm:mt-4" v-for="activity in activities" :key="activity.id">
 
-        <div
-          class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+        <div  class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
           <div class="mb-8">
             <div class="text-gray-900 font-bold text-xl mb-2">{{ activity.activityName }}</div>
             <p class="text-gray-600">Submission Time: {{ activity.submissiontime }}</p>
             <p class="text-gray-700 text-base">{{ activity.activityDescription }}</p>
-          </div>
-          <div class="flex items-center">
-            <div class="text-sm">
-              <p class="text-gray-900 leading-none">Due Date : {{ activity.dueDate }}</p>
-              <p class="text-gray-600"> Activity ID: {{ activity.Activity_ID }}</p>
-            </div>
+            <p class="text-gray-900 leading-none">Due Date : {{ activity.dueDate }}</p>
+            <p class="text-gray-600"> Activity ID: {{ activity.Activity_ID }}</p>
+            <div class="flex items-center">
             <ul>
               <li class="text-gray-600" v-for="forclass in activity.forclasses" :key="forclass">{{forclass}}</li>
             </ul>
-
           </div>
-        </div>
-        <button class="bg-blue-500 hover:bg-orange-200 text-white font-bold py-1 px-4 rounded"
+          </div>
+          
+
+          <button class=" w-64  bg-orange-600 text-white font-bold py-1 px-4 rounded mb-2"
           @click="viewSubmissionsForActivity(activity.Activity_ID)">View Submissions</button>
 
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-64 mb-2"
           @click="openUpdateActivityPopup(activity)"> Edit
         </button>
 
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded w-64 mb-2"
           @click="confirmDeleteActivity(activity._id)">
           Delete
         </button>
-
-
-
-      </div>
+          </div>
+          
+    </div>
 
 
 
       <!-- Edit Activity Popup -->
 
-      <div v-if="showEditActivityPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div ref="popupContainer" class="bg-white max-w-lg mx-auto rounded shadow-lg p-6">
+      <div v-if="showEditActivityPopup" class="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black max-w-3xl mx-auto rounded shadow-lg p-6 overflow-y-auto">
+        <div ref="popupContainer" class="bg-white h-5 bg-opacity-0">
           <div class="popup-content">
             <h2 class="text-xl font-bold mb-4">Edit Activity</h2>
             <form @submit.prevent="submitEditActivityForm">
@@ -185,22 +147,29 @@
 
 
 
-  <div v-if="showSubmissionsPopup" class=" inset-0 flex items-center justify-center bg-black bg-opacity-50" >
-   <div class="popup-content">
-    <h2>Submissions</h2>
-    <table>
+  <div v-if="showSubmissionsPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" >
+    <div ref="popupContainer" class="bg-white max-w-3xl mx-auto rounded shadow-lg p-6 overflow-y-auto">
+      <div class="popup-content">
+        <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2"
+        @click="showSubmissionsPopup = false">Close
+      </button>
+  
+    <table  class="w-full table-auto table-auto">
       <thead>
-        <tr>
-          <th>Submission Name</th>
-          <th>Submission File</th>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left">Student Email</th>
+          <th class="py-3 px-6 text-left">Submission Name</th>
+          <th class="py-3 px-6 text-left">Submission File</th>
+          <th class="py-3 px-6 text-left">Delete</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="submission in submissions" :key="submission._id">
-          <td>{{submission.submissionName}}</td>
-          <td>{{submission.submissionFile}}</td>
+      <tbody class="text-gray-600 text-sm font-light">
+        <tr v-for="submission in submissions" :key="submission._id" class="border-b border-gray-200 hover:bg-gray-100">
+          <td class="py-3 px-6 text-left whitespace-nowrap">{{submission.studentEmail}}</td>
+          <td class="py-3 px-6 text-left whitespace-nowrap">{{submission.submissionName}}</td>
+          <td class="py-3 px-6 text-left whitespace-nowrap">{{submission.submissionFile}}</td>
         
-          <td>        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+          <td><button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
             @click="confirmDeleteSubmission(submission._id)">
             Delete
           </button></td>
@@ -211,13 +180,10 @@
           </td>
         </tr>
       </tbody>
+    </table>
 
 
-
-
-
-
-
+    </div>
   </div>
 </div>
 </div>
@@ -226,7 +192,7 @@
 
 
 
-
+  <script src="../sidebar.js"></script>
   <script src="../app.js"></script>
 </body>
 
