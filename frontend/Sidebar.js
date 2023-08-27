@@ -23,13 +23,17 @@ const Sidebar = {
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
           <i class="fas fa-home"></i> 
           <span class="text-[15px] ml-4 text-gray-200">
+         <a href="#">Dashboard</a></span>  
+        </div>
 
-          <a href="#">Dashboard</a></span>  
+          <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
+          <i class=""></i> 
+          <a href="./create-activity.html"><span class="text-[15px] ml-4 text-gray-200">Create Activity</span></a>
           </div>
 
           <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
-          <i class="fas fa-home"></i> 
-          <span class="text-[15px] ml-4 text-gray-200">Subjects</span>  
+          <i class=""></i> 
+          <a href="./manage-activity-per-teacher.html"><span class="text-[15px] ml-4 text-gray-200">Manage Activities</span></a>
           </div>
    
 
