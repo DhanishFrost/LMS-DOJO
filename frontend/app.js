@@ -803,64 +803,6 @@ new Vue({
     },
 
 
-    /*
-    
-    
-          submitCreateSubmissionForm(){
-    
-            const currentemail = localStorage.getItem('Currentemail');
-            const currentActivityID = localStorage.getItem('Activity_ID');
-            const formData = new FormData();
-            formData.append("submissionName" , this.submission.submissionName)
-            formData.append("submissionFile" , this.submissionFile);
-            formData.append("submissionFile" , this.submissionFile.name);
-            formData.append("Activity_ID", currentActivityID); // Use the stored Activity_ID
-            formData.append("studentEmail", currentemail); // Use the stored student email
-            
-            
-            
-           axios.post(`/uploads`, formData)
-      
-            .then(response => {
-              alert(response.data.message);
-              console.log(response.data.data);
-              console.log(this.submissionFile.name);
-              console.log(this.submission.Activity_ID);
-              console.log(currentActivityID);
-              console.log(currentemail);
-              localStorage.removeItem('Activity_ID');
-    
-              axios.post('/activity/updateSubmissionStatus',{
-                Activity_ID: currentActivityID,
-                studentEmail: currentemail,
-                submissionStatus: 'Submitted'
-              } ). then(statusResponse => {
-                console.log(statusResponse.data);
-               
-              }
-              ).catch(error => {
-                console.error(error);
-                alert('An error occurred while updating the submission status.');
-              }
-              );
-              
-      
-            }
-            ).catch(error => {
-              console.error(error);
-              alert('An error occurred while creating lala the submission.');
-            });
-      
-      
-          },*/
-
-
-    /*window(){
-      window.location.href = `/primary-student/primary-student-dashboard?token=${token}`;
-      localStorage.removeItem('Activity_ID');
-
-    },*/
-
 
     openUpdateActivityPopup(activity) {
 
