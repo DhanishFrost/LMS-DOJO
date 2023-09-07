@@ -107,6 +107,8 @@ new Vue({
   el: '#app',
   data() {
     return {
+      valueforexample: 'valueforexample',
+      studentByClass: [],
       showSubmissionsPopup: false,
       TeacherclassOptions: ['1A', '1B', '1C', '2A', '2B', '2C', '3A', '3B', '3C', '4A', '4B', '4C', '5A', '5B', '5C', '6A', '6B', '6C', '7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', '10A', '10B', '10C', '11A', '11B', '11C', '12A', '12B', '12C'],
       teacherclasses: [],
@@ -257,7 +259,6 @@ new Vue({
     //this.getSubmissionsByActivity();
     this.getActivitiesPerClass();
     this.getAllSubmissions();
-
 
   },
 
@@ -1184,9 +1185,38 @@ new Vue({
       localStorage.removeItem('Activity_ID');
 
       window.location.href = '/';
-    }
+    },
+    getStudentForClass() {
+      const endpointURL = '/class';
+      var selectElement = document.getElementById("mySelect");
+        var selectedValue = selectElement.value;
+        console.log(selectedValue);
+    
+        // Create an object with a key-value pair
+        const data = {
+          selectedValue: selectedValue,
+         };
+    
+        // fetch(endpointURL, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(data), // Send the object as JSON
+        // })
+        axios.get(`/class/${selectedValue}`)
+        .then(response => {
+          console.log(response.data);
+          this.studentByClass = response.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    
   }
 });
+
 
 
 

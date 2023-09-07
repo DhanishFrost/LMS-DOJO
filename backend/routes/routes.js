@@ -126,4 +126,8 @@ router.delete('/subject/deleteSubject/:subjectId', subjectController.deleteSubje
 router.post('/quiz/createQuiz', quizController.createQuiz);
 router.get('/quiz/getQuiz', quizController.getQuiz);
 
+//teacher route
+router.get('/class/:selectedValue' , userController.getStudentByclass);
+
+
 module.exports = router;

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+        <title>Attendance</title>
+      </head>
+
+<body>
+    
+  <div id="app">
+    <div class="flex w-auto">
+    <div id="app" class="h-screen">
+    <aside id="sidepanel" class="w-64 bg-black text-white max-md:w-0">
+        <sidebar></sidebar>
+      </aside>
+    </div>
+      
+    <div class="p-8 flex-col justify-between border">
+        <div class="p-8 flex justify-between border">
+        <div>
+          <h1 class="text-3xl font-bold mb-2 max-md:text-xl">Teacher Dashboard</h1>
+        </div>
+        <div class="text-right">
+          <p class="text-lg font-bold mb-2 text-[#FF823C] max-md:text-sm">WELCOME BACK!</p>
+          <p><span id="userName" class="font-semibold text-2xl max-md:text-xl">{{ userName }}</span></p>
+
+        </div>
+    </div>
+
+    <div>
+        <div class="p-4 border rounded-md">
+            <label for="class-selector" class="block text-gray-700 font-bold">Select a class:</label>
+           
+            <select @change="getStudentForClass" id="mySelect" class="mt-2 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+              <option value="" disabled selected hidden>Select an option</option>
+              <option v-for="teacherclass in teacherclasses" :key="teacherclass">{{ teacherclass }}</option>
+            </select>
+          </div>
+
+          
+   
+
+          <div class="flex flex-col mb-4 border rounded-md">
+            <label for="Date" class="block text-gray-700 font-bold">Date</label>
+            <input v-model="activity.dueDate" type="date" id="dueDate" name="dueDate"
+                class="border border-gray-300 rounded-md p-2">
+        </div>
+
+      <div class="flex">
+        <div class="flex flex-col mb-4">
+            <label for="sessionstart" class="text-gray-700">Session Start time</label>
+            <input type="time" id="submissiontime" name="submissiontime"
+                class="border border-gray-300 rounded-md p-2" >
+        </div>
+
+        <div class="flex flex-col mb-4">
+            <label for="sessionend" class="text-gray-700">Session End time</label>
+            <input type="time" id="submissiontime" name="submissiontime"
+                class="border border-gray-300 rounded-md p-2" >
+        </div>
+    </div>
+
+    <form>
+
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Name</th>
+                <th class="px-4 py-2">Email</th>
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">Remarks</th>
+            </tr>
+        </thead>
+        <tbody class="border border-gray-300 mx-auto">
+            <tr v-for="user in studentByClass" :key="user._id">
+              <td class="border px-4 py-2">{{ user.name }}</td>
+              <td class="border px-4 py-2">{{ user.email }}</td>
+                <td class="border px-4 py-2"><select id="class-selector" class="mt-2 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                    <option value="select-class" selected>Present</option>
+                    <option value="option1">Absent</option>
+                  </select></td>
+                <td class="border px-4 py-2"><textarea></textarea></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Mark Attendance</button>
+</form>
+          
+        
+    </div>
+        
+
+
+      </div>
+
+      </div>
+    </div>
+    
+    
+
+      <script src="../Sidebar.js"></script>
+      <script>
+        new Vue({
+          el: '#sidebar',
+        });
+      </script>
+        <script src="../app.js"></script>
+    
+</body>
+
+
+
+</html>

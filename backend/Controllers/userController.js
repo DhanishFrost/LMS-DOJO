@@ -154,5 +154,23 @@ var getAllSubjects = async (req, res) => {
     }
 }
 
+var getStudentByclass = async (req, res) => {
+    
+    try {
 
-module.exports = { login, getStudentUsers, getAdminUsers, getTeacherUsers, createUser, updateUser, deleteUser, getAllClasses , getAllSubjects };
+        var value = await req.params.selectedValue;
+        const users = await userService.getStudentByclass(value);
+        console.log(value);
+        console.log(users);
+        
+        
+        res.status(200).json({ status: true, data: users });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, data: [] });
+      }
+    
+};
+
+
+module.exports = { login, getStudentUsers, getAdminUsers, getTeacherUsers, createUser, updateUser, deleteUser, getAllClasses , getAllSubjects , getStudentByclass};

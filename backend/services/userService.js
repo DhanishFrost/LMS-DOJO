@@ -185,3 +185,35 @@ module.exports.deleteUser = (email) => {
             .catch(error => reject(error));
     });
 };
+
+module.exports.getStudentByclass = async (studentClass) => {
+  /* try {
+     const rolesToSearch = ['pStudent', 'lsStudent', 'usStudent'];
+     
+ 
+     const user = await User.find({
+       role: { $in: rolesToSearch },
+       class: studentClass,
+     });
+     if (!user) {
+       return { success: false, message: 'There is no such user' };
+     }
+ 
+     return { success: true, user };
+     
+   } catch (error) {
+     console.error(error.message);
+     return { success: false, message: 'No student with the specific class' };
+     
+   }*/
+   return new Promise(function (resolve, reject) {
+     const rolesToSearch = ['pStudent', 'lsStudent', 'usStudent'];
+      User.find({
+       role: { $in: rolesToSearch },
+       class: studentClass,
+     })
+         .then(user => resolve(user))
+         .catch(error => reject(error));
+ });
+     
+ };

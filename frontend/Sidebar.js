@@ -21,10 +21,10 @@ const Sidebar = {
 
 
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
-          <i class="fas fa-home"></i> 
-          <span class="text-[15px] ml-4 text-gray-200">
-         <a href="#">Dashboard</a></span>  
-        </div>
+        <i class="fas fa-home"></i> 
+        <span class="text-[15px] ml-4 text-gray-200">
+       <a href="./teacher-dashboard.html">Dashboard</a></span>  
+      </div>
 
           <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
           <i class=""></i> 
@@ -39,10 +39,11 @@ const Sidebar = {
 
 
       
-      <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
-      <i class="fa-solid fa-clipboard-user"></i>
-          <span class="text-[15px] ml-4 text-gray-200">Attendance</span>  
-          </div>
+          
+          <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover bg-orange-600 text-white ">
+          <i class="fa-solid fa-clipboard-user"></i>
+              <span class="text-[15px] ml-4 text-gray-200"><a href="./attendance.html">Attendance</a></span></span>  
+              </div>
    
 
 
